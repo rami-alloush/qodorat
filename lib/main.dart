@@ -45,7 +45,7 @@ class CheckLogin extends StatelessWidget {
       var userType = getUserType(user);
       switch (userType) {
         case "not_verified":
-          return HomePage(); //AskForVerification();
+          return LoginSignUpPage();
           break;
         case "admin":
           return HomePage(); //AdminHomePage();
@@ -63,8 +63,18 @@ class CheckLogin extends StatelessWidget {
 
 getUserType(FirebaseUser user) {
   var userType = "guest";
-  print("UserType: " + '$userType');
+
+  if (!user.isEmailVerified) {
+    userType = "not_verified";
+  }
+
+  if (user.uid == "OKOBJxbEeVSzjr79X2QF3ZnDjUA3") {
+    userType = "admin";
+  } else {
+    // Check Guest or Paid
+
+  }
+
+  print("UserType: " + '$userType' + ' ' + '${user.uid}');
   return userType;
 }
-
-

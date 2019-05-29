@@ -6,9 +6,10 @@ import 'models.dart';
 class DatabaseService {
   final Firestore _db = Firestore.instance;
 
-  Future<void> createUser(FirebaseUser user) {
+  Future<void> createUser(FirebaseUser user, String phone) {
     return _db.collection('users').document(user.uid).setData({
       'email': '${user.email}',
+      'phone': '$phone',
       'paid': false,
     });
   }

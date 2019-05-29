@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:qodorat/pages/intro_page.dart';
+import 'package:qodorat/db.dart';
 
 class LoginSignUpPage extends StatefulWidget {
   final auth = FirebaseAuth.instance;
+  final db = DatabaseService();
 
   @override
   State<StatefulWidget> createState() => new _LoginSignUpPageState();
@@ -14,10 +16,12 @@ class LoginSignUpPage extends StatefulWidget {
 enum FormMode { LOGIN, SIGNUP }
 
 class _LoginSignUpPageState extends State<LoginSignUpPage> {
-  final _formKey = new GlobalKey<FormState>();
+  final _loginFormKey = new GlobalKey<FormState>();
+  final _signupFormKey = new GlobalKey<FormState>();
 
   String _email;
   String _password;
+  String _phone;
   String _errorMessage;
 
   // Initial form is login form
@@ -27,6 +31,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
 
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
+  final FocusNode _phoneFocus = FocusNode();
 
   @override
   void initState() {
@@ -36,6 +41,17 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       checkFirstSeen();
     });
     super.initState();
+  }
+
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+    if (!_seen) {
+      // Never saw intro
+      prefs.setBool('seen', true);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => IntroScreen()));
+    }
   }
 
   @override
@@ -51,31 +67,20 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             builder: (BuildContext context) {
           return Stack(
             children: <Widget>[
-              _showBody(context),
+              _formMode == FormMode.LOGIN
+                  ? _showLoginBody(context)
+                  : _showSignUpBody(context),
               _showCircularProgress(),
             ],
           );
         }));
   }
 
-  Future checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen') ?? false);
-//    print("Seen? " + '$_seen');
-
-    if (!_seen) {
-      // Never saw intro
-      prefs.setBool('seen', true);
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => IntroScreen()));
-    }
-  }
-
-  Widget _showBody(BuildContext context) {
+  Widget _showLoginBody(BuildContext context) {
     return new Container(
         padding: EdgeInsets.all(16.0),
-        child: new Form(
-          key: _formKey,
+        child: Form(
+          key: _loginFormKey,
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
@@ -84,18 +89,30 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               _showPasswordInput(),
               _showErrorMessage(),
               _showPrimaryButton(),
-              _showSecondaryButton(),
-              RaisedButton(
-                child: Text('دخول عشوائي (اختبار)'),
-                onPressed: _signInAnonymously,
-              )
+              _showSecondaryButton()
             ],
           ),
         ));
   }
 
-  void _signInAnonymously() {
-    FirebaseAuth.instance.signInAnonymously();
+  Widget _showSignUpBody(BuildContext context) {
+    return new Container(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _signupFormKey,
+          child: new ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              _showLogo(),
+              _showEmailInput(),
+              _showPasswordInput(),
+              _showPhoneInput(),
+              _showErrorMessage(),
+              _showPrimaryButton(),
+              _showSecondaryButton()
+            ],
+          ),
+        ));
   }
 
   Widget _showLogo() {
@@ -135,12 +152,16 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
 
   Widget _showPasswordInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
       child: new TextFormField(
+        initialValue: "123456",
         maxLines: 1,
         obscureText: true,
+        textInputAction: TextInputAction.next,
         focusNode: _passFocus,
         autofocus: false,
+        onFieldSubmitted: (term) =>
+            FocusScope.of(context).requestFocus(_phoneFocus),
         decoration: new InputDecoration(
             hintText: 'كلمة المرور',
             icon: new Icon(
@@ -149,6 +170,28 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             )),
         validator: (value) => value.isEmpty ? 'برجاء ادخال كلمة المرور' : null,
         onSaved: (value) => _password = value,
+      ),
+    );
+  }
+
+  Widget _showPhoneInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+      child: TextFormField(
+        initialValue: "123456",
+        maxLines: 1,
+        keyboardType: TextInputType.phone,
+        textInputAction: TextInputAction.done,
+        focusNode: _phoneFocus,
+        autofocus: false,
+        decoration: InputDecoration(
+            hintText: 'الجوال',
+            icon: Icon(
+              Icons.phone,
+              color: Colors.grey,
+            )),
+        validator: (value) => value.isEmpty ? 'برجاء ادخال رقم الجوال' : null,
+        onSaved: (value) => _phone = value,
       ),
     );
   }
@@ -198,29 +241,27 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       });
       String userId = "";
       try {
+        // Login Form
         if (_formMode == FormMode.LOGIN) {
           FirebaseUser user = await widget.auth
               .signInWithEmailAndPassword(email: _email, password: _password);
           userId = user.uid;
           print('Signed in: $userId');
+
+          if (!user.isEmailVerified) {
+            _showVerifyEmailSentDialog(user);
+          }
         } else {
+          // SignUp Form
           FirebaseUser user = await widget.auth.createUserWithEmailAndPassword(
               email: _email, password: _password);
           userId = user.uid;
           print('Signed up user: $userId');
-          // Will be redirected from StartPage()
-          user.sendEmailVerification();
-          _showVerifyEmailSentDialog();
-          setState(() {
-            _isLoading = false;
-          });
-        }
 
-        // Callback (not used)
-        if (userId.length > 0 &&
-            userId != null &&
-            _formMode == FormMode.LOGIN) {
-          print("Debug: " + "widget.onSignedIn()");
+          // Take Actions
+          widget.db.createUser(user, _phone);
+          user.sendEmailVerification();
+          _showVerifyEmailSentDialog(user);
         }
       } catch (e) {
         print('Auth Error: $e');
@@ -243,6 +284,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             case "ERROR_USER_DISABLED":
               _errorMessage = "تم إيقاف هذا الحساب. برجاء التواصل مع الإدارة";
               break;
+            case "ERROR_EMAIL_ALREADY_IN_USE":
+              _errorMessage =
+                  "تم تسجيل حساب بهذا البريد الإلكتروني. برجاء تسجيل الدخول";
+              break;
           }
         });
       }
@@ -251,7 +296,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
 
   // Check if form is valid before perform login or signup
   bool _validateAndSave() {
-    final form = _formKey.currentState;
+    final form = _formMode == FormMode.LOGIN
+        ? _loginFormKey.currentState
+        : _signupFormKey.currentState;
+
     if (form.validate()) {
       form.save();
       return true;
@@ -260,7 +308,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   void _changeFormToSignUp() {
-    _formKey.currentState.reset();
+    _loginFormKey.currentState.reset();
     _errorMessage = "";
     setState(() {
       _formMode = FormMode.SIGNUP;
@@ -268,7 +316,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   void _changeFormToLogin() {
-    _formKey.currentState.reset();
+    _signupFormKey.currentState.reset();
     _errorMessage = "";
     setState(() {
       _formMode = FormMode.LOGIN;
@@ -285,7 +333,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     );
   }
 
-  void _showVerifyEmailSentDialog() {
+  void _showVerifyEmailSentDialog(FirebaseUser user) {
+    setState(() {
+      _isLoading = false;
+    });
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -295,11 +346,25 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           content: new Text(
               "تم إرسال رابط تأكيد البريد الإلكتروني. برجاء تأكيد البريد الإلكتروني حتى تتمكن من استخدام البرنامج."),
           actions: <Widget>[
+            new RaisedButton(
+              child: new Text(
+                "إعادة إرسال",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                user.sendEmailVerification();
+                Navigator.of(context).pop();
+                widget.auth.signOut();
+              },
+            ),
             new FlatButton(
               child: new Text("موافق"),
               onPressed: () {
-                _changeFormToLogin();
+                if (_signupFormKey.currentState != null) {
+                  _changeFormToLogin();
+                }
                 Navigator.of(context).pop();
+                widget.auth.signOut();
               },
             ),
           ],
