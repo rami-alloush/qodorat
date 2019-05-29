@@ -35,20 +35,36 @@ class MyApp extends StatelessWidget {
 
 class CheckLogin extends StatelessWidget {
   @override
+  // ignore: missing_return
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     print("User: " + '$user');
-
-    // should handle when signed in and not verified resend link)
-    return (_userProperlyLogged(user)) ? HomePage() : LoginSignUpPage();
+    if (user == null) {
+      return LoginSignUpPage();
+    } else {
+      var userType = getUserType(user);
+      switch (userType) {
+        case "not_verified":
+          return HomePage(); //AskForVerification();
+          break;
+        case "admin":
+          return HomePage(); //AdminHomePage();
+          break;
+        case "guest":
+          return HomePage(); //GuestHomePage();
+          break;
+        case "paid":
+          return HomePage(); //PaidHomePage();
+          break;
+      }
+    }
   }
 }
 
-bool _userProperlyLogged(user) {
-//  if (!user.isEmailVerified) {
-//    // user.sendEmailVerification();
-//  }
-//  return (user != null &&  user.isEmailVerified);
-  print("user is checked");
-  return (user != null);
+getUserType(FirebaseUser user) {
+  var userType = "guest";
+  print("UserType: " + '$userType');
+  return userType;
 }
+
+

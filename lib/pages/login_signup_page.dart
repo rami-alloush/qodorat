@@ -61,7 +61,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
-    print("Seen? " + '$_seen');
+//    print("Seen? " + '$_seen');
 
     if (!_seen) {
       // Never saw intro
@@ -209,11 +209,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           userId = user.uid;
           print('Signed up user: $userId');
           // Will be redirected from StartPage()
-//          user.sendEmailVerification();
-//          _showVerifyEmailSentDialog();
-//          setState(() {
-//            _isLoading = false;
-//          });
+          user.sendEmailVerification();
+          _showVerifyEmailSentDialog();
+          setState(() {
+            _isLoading = false;
+          });
         }
 
         // Callback (not used)

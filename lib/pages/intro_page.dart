@@ -44,8 +44,6 @@ class IntroScreenState extends State<IntroScreen> {
   }
 
   void onDonePress() {
-    print("Done intro");
-    // First time user of the app
     Navigator.of(context).pop();
   }
 

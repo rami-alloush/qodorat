@@ -64,7 +64,6 @@ class WeaponsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var weapons = Provider.of<List<Weapon>>(context);
-    print(weapons);
     bool weaponsReady = (weapons != null && weapons.length > 0);
     var user = Provider.of<FirebaseUser>(context);
 
