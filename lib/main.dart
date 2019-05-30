@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
 import 'package:qodorat/pages/home_page.dart';
+import 'package:qodorat/pages/admin_home_page.dart';
 import 'package:qodorat/db.dart';
 
 void main() => runApp(MyApp());
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: [const Locale("ar")],
         theme: ThemeData(
             brightness: Brightness.light,
-            primaryColor: Colors.deepOrange,
+            primaryColor: Colors.deepOrange.shade600,
             primarySwatch: Colors.orange,
             buttonTheme: ButtonThemeData(buttonColor: Colors.white)),
         home: CheckLogin(),
@@ -40,8 +41,27 @@ class CheckLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     final db = DatabaseService();
-
     print("User: " + '$user');
+
+    final _loadingScaffold = Scaffold(
+        body: Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.deepOrange, Colors.orange[600]],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
+          ),
+          child: Center(
+            child: new Text(
+              'جاري التحميل ...',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ));
+
     if (user == null) {
       return LoginSignUpPage();
     } else {
@@ -50,7 +70,7 @@ class CheckLogin extends StatelessWidget {
         case "not_verified":
           return LoginSignUpPage();
         case "admin":
-          return HomePage(); //AdminHomePage();
+          return AdminHomePage();
         case "registered":
           return FutureBuilder<bool>(
             future: db.isUserPaid(user),
@@ -59,24 +79,7 @@ class CheckLogin extends StatelessWidget {
                 case ConnectionState.none:
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return Scaffold(
-                      body: Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Colors.deepOrange, Colors.orange[600]],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight),
-                        ),
-                        child: Center(
-                          child: new Text(
-                            'جاري التحميل ...',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ));
+                  return _loadingScaffold;
                 case ConnectionState.done:
                   if (snapshot.hasError)
                     return Scaffold(
