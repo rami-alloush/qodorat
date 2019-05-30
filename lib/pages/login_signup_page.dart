@@ -288,6 +288,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               _errorMessage =
                   "تم تسجيل حساب بهذا البريد الإلكتروني. برجاء تسجيل الدخول";
               break;
+            case "ERROR_NETWORK_REQUEST_FAILED":
+              _errorMessage =
+                  "تعذّر الاتصال بالإنترنت!\nبرجاء التحقق من اتصالك وإعادة المحاولة";
+              break;
           }
         });
       }
@@ -380,6 +384,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             _errorMessage,
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.red,
