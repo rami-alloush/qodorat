@@ -3,11 +3,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
-import 'package:qodorat/pages/home_page.dart';
 import 'package:qodorat/pages/admin_home_page.dart';
 import 'package:qodorat/pages/paid_home_page.dart';
 import 'package:qodorat/pages/guest_home_page.dart';
 import 'package:qodorat/db.dart';
+import 'package:qodorat/pages/home_page.dart';
+import 'package:qodorat/pages/chat_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -63,6 +64,9 @@ class CheckLogin extends StatelessWidget {
             ),
           ),
         ));
+
+    // Test Page
+//    return ChatScreen();
 
     // Start render based on userType
     if (user == null) {
