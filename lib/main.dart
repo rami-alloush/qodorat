@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
 import 'package:qodorat/pages/home_page.dart';
 import 'package:qodorat/pages/admin_home_page.dart';
+import 'package:qodorat/pages/paid_home_page.dart';
+import 'package:qodorat/pages/guest_home_page.dart';
 import 'package:qodorat/db.dart';
 
 void main() => runApp(MyApp());
@@ -62,6 +64,7 @@ class CheckLogin extends StatelessWidget {
           ),
         ));
 
+    // Start render based on userType
     if (user == null) {
       return LoginSignUpPage();
     } else {
@@ -103,10 +106,10 @@ class CheckLogin extends StatelessWidget {
                   print('isPaid? ${snapshot.data}');
                   if (snapshot.data) {
                     // Paid user
-                    return HomePage(); //PaidHomePage();
+                    return PaidHomePage();
                   } else {
                     // Guest
-                    return HomePage(); //GuestHomePage();
+                    return GuestHomePage();
                   }
               }
               return null; // unreachable
