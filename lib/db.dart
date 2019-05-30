@@ -19,6 +19,11 @@ class DatabaseService {
     return User.fromMap(snap.data);
   }
 
+  Future<bool> isUserPaid(FirebaseUser user) async {
+    var snap = await _db.collection('users').document(user.uid).get();
+    return User.fromMap(snap.data).paid;
+  }
+
   /// Get a stream of a single document
   Stream<User> streamUser(FirebaseUser user) {
     return _db
@@ -52,4 +57,5 @@ class DatabaseService {
         .document(id)
         .delete();
   }
+
 }

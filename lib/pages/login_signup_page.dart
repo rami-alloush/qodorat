@@ -261,7 +261,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           // Take Actions
           widget.db.createUser(user, _phone);
           user.sendEmailVerification();
-          _showVerifyEmailSentDialog(user);
+//          _showVerifyEmailSentDialog(user);
         }
       } catch (e) {
         print('Auth Error: $e');
