@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
               return Center(
                 child: RaisedButton(
                     child: Text('Update Profile'),
-                    onPressed: () => db.createUser(user, "123446")),
+                    onPressed: () => db.createUser(user, "123456")),
               );
             }
           },

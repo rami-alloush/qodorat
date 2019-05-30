@@ -56,7 +56,7 @@ class IntroScreenState extends State<IntroScreen> {
         color: Colors.white,
       ),
       renderSkipBtn: Text(
-        "إلغاء",
+        "إلفاء",
       ),
       renderDoneBtn: Text(
         "تم",

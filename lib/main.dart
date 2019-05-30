@@ -34,14 +34,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CheckLogin extends StatefulWidget {
-  @override
-  _CheckLoginState createState() => _CheckLoginState();
-}
-
-class _CheckLoginState extends State<CheckLogin> {
-  var _userType;
-
+class CheckLogin extends StatelessWidget {
   @override
   // ignore: missing_return
   Widget build(BuildContext context) {
@@ -49,36 +42,79 @@ class _CheckLoginState extends State<CheckLogin> {
     final db = DatabaseService();
 
     print("User: " + '$user');
-
     if (user == null) {
       return LoginSignUpPage();
     } else {
-      return FutureBuilder(
-          future: getUserType(user),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              default:
-                switch (snapshot.data) {
-                  case "not_verified":
-                    return LoginSignUpPage();
-                  case "admin":
-                    return HomePage(); //AdminHomePage();
-                  case "guest":
-                    return HomePage(); //GuestHomePage();
-                  case "paid":
+      var userType = getUserType(user);
+      switch (userType) {
+        case "not_verified":
+          return LoginSignUpPage();
+        case "admin":
+          return HomePage(); //AdminHomePage();
+        case "registered":
+          return FutureBuilder<bool>(
+            future: db.isUserPaid(user),
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.active:
+                case ConnectionState.waiting:
+                  return Scaffold(
+                      body: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Colors.deepOrange, Colors.orange[600]],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
+                        ),
+                        child: Center(
+                          child: new Text(
+                            'جاري التحميل ...',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ));
+                case ConnectionState.done:
+                  if (snapshot.hasError)
+                    return Scaffold(
+                        body: Container(
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Colors.deepOrange, Colors.orange[600]],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                          ),
+                          child: Center(
+                            child: new Text(
+                              'Error: ${snapshot.error}',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ));
+                  print('isPaid? ${snapshot.data}');
+                  if (snapshot.data) {
+                    // Paid user
                     return HomePage(); //PaidHomePage();
-                }
-            }
-          });
+                  } else {
+                    // Guest
+                    return HomePage(); //GuestHomePage();
+                  }
+              }
+              return null; // unreachable
+            },
+          );
+      }
     }
   }
 }
 
-getUserType(FirebaseUser user) async {
-  final db = DatabaseService();
+getUserType(FirebaseUser user) {
   var userType;
 
   if (!user.isEmailVerified) {
@@ -87,11 +123,7 @@ getUserType(FirebaseUser user) async {
     userType = "admin";
   } else {
     // Check Guest or Paid
-    if (await db.isUserPaid(user)) {
-      userType = "paid";
-    } else {
-      userType = "guest";
-    }
+    userType = "registered";
   }
 
   print("UserType: " + '$userType' + ' ' + '${user.uid}');
