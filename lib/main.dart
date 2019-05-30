@@ -46,6 +46,8 @@ class _CheckLoginState extends State<CheckLogin> {
   // ignore: missing_return
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
+    final db = DatabaseService();
+
     print("User: " + '$user');
 
     if (user == null) {
