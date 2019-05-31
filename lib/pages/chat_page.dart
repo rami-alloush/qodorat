@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+
+final auth = FirebaseAuth.instance;
+final analytics = new FirebaseAnalytics();
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -8,11 +13,23 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
+  FirebaseUser user;
   bool _isComposing = false;
 
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
+  }
+
+  getCurrentUser() async {
+    user = await auth.currentUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(title: new Text("محادثة")),
+//      appBar: new AppBar(title: new Text("محادثة")),
       body: new Column(
         children: <Widget>[
           new Flexible(
@@ -69,36 +86,54 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     );
   }
 
-  @override
-  void dispose() {
-    //new
-    for (ChatMessage message in _messages) //new
-      message.animationController.dispose(); //new
-    super.dispose(); //new
-  } //new
-
-  void _handleSubmitted(String text) {
+  _handleSubmitted(String text) async {
     _textController.clear();
+    setState(() {
+      _isComposing = false;
+    });
+//    await _ensureLoggedIn();
+    _sendMessage(text: text);
+  }
+
+//  Future<Null> _ensureLoggedIn() async {
+//    GoogleSignInAccount user = googleSignIn.currentUser;
+//    if (user == null)
+//      user = await googleSignIn.signInSilently();
+//    if (user == null)
+//      await googleSignIn.signIn();
+//  }
+
+  void _sendMessage({String text}) {
     ChatMessage message = new ChatMessage(
       text: text,
       animationController: new AnimationController(
-        duration: new Duration(milliseconds: 400),
+        duration: new Duration(milliseconds: 700),
         vsync: this,
       ),
+      user: user,
     );
-    message.animationController.forward();
     setState(() {
-      _isComposing = false;
       _messages.insert(0, message);
     });
+    message.animationController.forward();
+    analytics.logEvent(name: 'send_message');
+  }
+
+  @override
+  void dispose() {
+    //new
+    for (ChatMessage message in _messages)
+      message.animationController.dispose();
+    super.dispose();
   }
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text, this.animationController});
+  ChatMessage({this.text, this.animationController, this.user});
 
   final String text;
   final AnimationController animationController;
+  final FirebaseUser user;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +156,10 @@ class ChatMessage extends StatelessWidget {
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-//                  new Text(_name, style: Theme.of(context).textTheme.subtitle,),
+                    new Text(
+                      user.uid,
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
                     new Container(
                       margin: const EdgeInsets.only(top: 5.0),
                       child: new Text(text),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:qodorat/pages/intro_page.dart';
 import 'package:qodorat/db.dart';
+
+final analytics = new FirebaseAnalytics();
+enum FormMode { LOGIN, SIGNUP }
 
 class LoginSignUpPage extends StatefulWidget {
   final auth = FirebaseAuth.instance;
@@ -12,8 +16,6 @@ class LoginSignUpPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _LoginSignUpPageState();
 }
-
-enum FormMode { LOGIN, SIGNUP }
 
 class _LoginSignUpPageState extends State<LoginSignUpPage> {
   final _loginFormKey = new GlobalKey<FormState>();
@@ -49,8 +51,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     if (!_seen) {
       // Never saw intro
       prefs.setBool('seen', true);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => IntroScreen()));
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => IntroScreen(),
+        settings: RouteSettings(name: 'IntroScreen'),
+      ));
     }
   }
 

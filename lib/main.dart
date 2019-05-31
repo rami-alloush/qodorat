@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
 import 'package:qodorat/pages/admin_home_page.dart';
 import 'package:qodorat/pages/paid_home_page.dart';
@@ -9,6 +11,8 @@ import 'package:qodorat/pages/guest_home_page.dart';
 import 'package:qodorat/db.dart';
 import 'package:qodorat/pages/home_page.dart';
 import 'package:qodorat/pages/chat_page.dart';
+
+FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() => runApp(MyApp());
 
@@ -27,6 +31,9 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [const Locale("ar")],
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
         theme: ThemeData(
             brightness: Brightness.light,
             primaryColor: Colors.deepOrange.shade600,
@@ -48,22 +55,22 @@ class CheckLogin extends StatelessWidget {
 
     final _loadingScaffold = Scaffold(
         body: Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.deepOrange, Colors.orange[600]],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.deepOrange, Colors.orange[600]],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight),
+      ),
+      child: Center(
+        child: new Text(
+          'جاري التحميل ...',
+          style: TextStyle(
+            color: Colors.white,
           ),
-          child: Center(
-            child: new Text(
-              'جاري التحميل ...',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ));
+        ),
+      ),
+    ));
 
     // Test Page
 //    return ChatScreen();
@@ -91,22 +98,22 @@ class CheckLogin extends StatelessWidget {
                   if (snapshot.hasError)
                     return Scaffold(
                         body: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.deepOrange, Colors.orange[600]],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Colors.deepOrange, Colors.orange[600]],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight),
+                      ),
+                      child: Center(
+                        child: new Text(
+                          'Error: ${snapshot.error}',
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
-                          child: Center(
-                            child: new Text(
-                              'Error: ${snapshot.error}',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ));
+                        ),
+                      ),
+                    ));
                   print('isPaid? ${snapshot.data}');
                   if (snapshot.data) {
                     // Paid user
@@ -136,6 +143,7 @@ getUserType(FirebaseUser user) {
     userType = "registered";
   }
 
+  analytics.logLogin();
   print("UserType: " + '$userType' + ' ' + '${user.uid}');
   return userType;
 }

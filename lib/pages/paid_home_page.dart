@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/placeholder_page.dart';
+import 'package:qodorat/pages/chat_page.dart';
 
 class PaidHomePage extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class PaidHomePageState extends State<PaidHomePage>
   List<AppPage> _items;
   int _currentIndex = 0;
   var _mainColor;
+  var _mainTitle;
 
   @override
   void initState() {
@@ -28,7 +30,7 @@ class PaidHomePageState extends State<PaidHomePage>
         icon: new Icon(Icons.chat),
         title: 'المحادثة',
         color: Colors.deepPurple,
-        body: PlaceholderPage(title: 'المحادثة'),
+        body: ChatScreen(),
         vsync: this,
       ),
       new AppPage(
@@ -87,13 +89,14 @@ class PaidHomePageState extends State<PaidHomePage>
           _currentIndex = int;
           _items[_currentIndex].controller.forward();
           _mainColor = _items[_currentIndex]._color;
+          _mainTitle = _items[_currentIndex]._title;
         });
       },
     );
 
     return new Scaffold(
       appBar: AppBar(
-        title: Text("لوحة الدارس"),
+        title: Text(_mainTitle ?? "لوحة الدارس"),
         backgroundColor: _mainColor,
       ),
       body: new Center(
