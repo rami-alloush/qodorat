@@ -19,9 +19,15 @@ class GuestHomePageState extends State<GuestHomePage>
 
     _items = [
       new AppPage(
+          icon: new Icon(Icons.stars),
+          title: 'مزايا الإشتراك',
+          color: Colors.deepOrange.shade600,
+          body: PlaceholderPage(title: 'مزايا الإشتراك'),
+          vsync: this),
+      new AppPage(
           icon: new Icon(Icons.import_contacts),
           title: 'الشروط والأحكام',
-          color: Colors.deepOrange.shade600,
+          color: Colors.brown,
           body: PlaceholderPage(title: 'الشروط والأحكام'),
           vsync: this),
       new AppPage(
@@ -43,8 +49,7 @@ class GuestHomePageState extends State<GuestHomePage>
       ),
     ];
 
-    for (AppPage view in _items)
-      view.controller.addListener(this._rebuild);
+    for (AppPage view in _items) view.controller.addListener(this._rebuild);
 
     _items[_currentIndex].controller.value = 1.0;
   }
@@ -132,7 +137,7 @@ class AppPage {
           backgroundColor: color,
         ) {
     _animation =
-    new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+        new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
   }
 
   FadeTransition buildTransition(BuildContext context) {

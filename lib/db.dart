@@ -33,6 +33,16 @@ class DatabaseService {
         .map((snap) => User.fromMap(snap.data));
   }
 
+  /// Messages
+  void sendMessage({String text, String chatDocID, FirebaseUser user}) {
+    _db.collection('chats').document(chatDocID)
+      ..collection('messages').add({
+        'text': text,
+        'sender': '${user.uid}',
+        'time': FieldValue.serverTimestamp(),
+      });
+  }
+
   /// Query a subcollection
   Stream<List<Weapon>> streamWeapons(FirebaseUser user) {
     var ref = _db.collection('heroes').document(user.uid).collection('weapons');
@@ -57,5 +67,4 @@ class DatabaseService {
         .document(id)
         .delete();
   }
-
 }

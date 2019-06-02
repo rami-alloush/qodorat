@@ -1,45 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firestore_ui/firestore_ui.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:qodorat/db.dart';
 
-final auth = FirebaseAuth.instance;
+final db = DatabaseService();
 final analytics = new FirebaseAnalytics();
 
 class ChatScreen extends StatefulWidget {
+  ChatScreen({this.targetUID});
+
+  final targetUID;
+
   @override
   State createState() => new ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
-  final List<ChatMessage> _messages = <ChatMessage>[];
+class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = new TextEditingController();
-  FirebaseUser user;
   bool _isComposing = false;
-
-  @override
-  void initState() {
-    getCurrentUser();
-    super.initState();
-  }
-
-  getCurrentUser() async {
-    user = await auth.currentUser();
-  }
+  bool isAdmin = false;
+  FirebaseUser user;
+  var _chatDocID;
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-//      appBar: new AppBar(title: new Text("محادثة")),
-      body: new Column(
+    user = Provider.of<FirebaseUser>(context);
+    isAdmin = widget.targetUID != null ? true : false;
+    _chatDocID = widget.targetUID == null ? user.uid : widget.targetUID;
+
+    return Scaffold(
+      body: Column(
         children: <Widget>[
           new Flexible(
-            child: new ListView.builder(
+            child: FirestoreAnimatedList(
+              query: Firestore.instance
+                  .collection('chats')
+                  .document(_chatDocID)
+                  .collection("messages")
+                  .orderBy("time", descending: true)
+                  .snapshots(),
               padding: new EdgeInsets.all(8.0),
               reverse: true,
-              itemBuilder: (_, int index) => _messages[index],
-              itemCount: _messages.length,
-            ),
-          ),
+              itemBuilder: (
+                BuildContext context,
+                DocumentSnapshot snapshot,
+                Animation<double> animation,
+                int index,
+              ) {
+                return FadeTransition(
+                    opacity: animation,
+                    child: ChatMessage(
+                      text: snapshot['text'],
+                      animation: animation,
+                      user: user,
+                    ));
+              },
+            ), // end of FirestoreAnimatedList
+          ), // end of Flexible
           new Divider(height: 1.0),
           new Container(
             decoration: new BoxDecoration(color: Theme.of(context).cardColor),
@@ -65,8 +85,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 });
               },
               onSubmitted: _isComposing ? _handleSubmitted : null,
-              decoration:
-                  new InputDecoration.collapsed(hintText: "Send a message"),
+              decoration: new InputDecoration.collapsed(hintText: "نص الرسالة"),
             ),
           ),
           new Container(
@@ -91,57 +110,29 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     setState(() {
       _isComposing = false;
     });
-//    await _ensureLoggedIn();
     _sendMessage(text: text);
   }
 
-//  Future<Null> _ensureLoggedIn() async {
-//    GoogleSignInAccount user = googleSignIn.currentUser;
-//    if (user == null)
-//      user = await googleSignIn.signInSilently();
-//    if (user == null)
-//      await googleSignIn.signIn();
-//  }
-
   void _sendMessage({String text}) {
-    ChatMessage message = new ChatMessage(
-      text: text,
-      animationController: new AnimationController(
-        duration: new Duration(milliseconds: 700),
-        vsync: this,
-      ),
-      user: user,
-    );
-    setState(() {
-      _messages.insert(0, message);
-    });
-    message.animationController.forward();
+    db.sendMessage(text: text, chatDocID: _chatDocID, user: user);
     analytics.logEvent(name: 'send_message');
-  }
-
-  @override
-  void dispose() {
-    //new
-    for (ChatMessage message in _messages)
-      message.animationController.dispose();
-    super.dispose();
   }
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text, this.animationController, this.user});
+  ChatMessage({this.text, this.animation, this.user});
 
   final String text;
-  final AnimationController animationController;
+  final Animation animation;
   final FirebaseUser user;
 
   @override
   Widget build(BuildContext context) {
     return new SizeTransition(
-        sizeFactor: new CurvedAnimation(
-            parent: animationController, curve: Curves.linearToEaseOut),
+        sizeFactor:
+            CurvedAnimation(parent: animation, curve: Curves.linearToEaseOut),
         axisAlignment: -10.0,
-        child: new Container(
+        child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10.0),
           child: new Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,14 +144,14 @@ class ChatMessage extends StatelessWidget {
               ),
               // Message
               Expanded(
-                child: new Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text(
+                    Text(
                       user.uid,
                       style: Theme.of(context).textTheme.subtitle,
                     ),
-                    new Container(
+                    Container(
                       margin: const EdgeInsets.only(top: 5.0),
                       child: new Text(text),
                     ),

@@ -158,7 +158,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
       child: new TextFormField(
-        initialValue: "123456",
+//        initialValue: "123456",
         maxLines: 1,
         obscureText: true,
         textInputAction: TextInputAction.next,
@@ -182,7 +182,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
       child: TextFormField(
-        initialValue: "123456",
+//        initialValue: "123456",
         maxLines: 1,
         keyboardType: TextInputType.phone,
         textInputAction: TextInputAction.done,

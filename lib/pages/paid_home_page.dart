@@ -14,11 +14,12 @@ class PaidHomePageState extends State<PaidHomePage>
   int _currentIndex = 0;
   var _mainColor;
   var _mainTitle;
+  FirebaseUser user;
 
   @override
   void initState() {
     super.initState();
-
+    FirebaseAuth.instance.currentUser().then((myuser) {setState() {user = myuser;}});
     _items = [
       new AppPage(
           icon: new Icon(Icons.content_paste),

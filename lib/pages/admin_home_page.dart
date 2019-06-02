@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/placeholder_page.dart';
+import 'package:qodorat/pages/admin_chat_list.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override
@@ -46,6 +47,10 @@ class AdminHomePageState extends State<AdminHomePage>
   int _currentIndex = 0;
   var _mainColor;
 
+  getCurrentUser() async {
+    return await FirebaseAuth.instance.currentUser();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -68,7 +73,7 @@ class AdminHomePageState extends State<AdminHomePage>
         icon: new Icon(Icons.chat),
         title: 'المحادثات',
         color: Colors.deepPurple,
-        body: PlaceholderPage(title: 'المحادثات'),
+        body: ChatListPage(), //ChatScreen(targetUID: "theTargetUID",), //PlaceholderPage(title: 'المحادثات'),
         vsync: this,
       ),
       new AppPage(
