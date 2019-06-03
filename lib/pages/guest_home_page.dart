@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/placeholder_page.dart';
 import 'package:qodorat/pages/start_chat_page.dart';
+import 'package:qodorat/pages/terms_and_conditions_page.dart';
 
 class GuestHomePage extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class GuestHomePageState extends State<GuestHomePage>
           icon: new Icon(Icons.import_contacts),
           title: 'الشروط والأحكام',
           color: Colors.brown,
-          body: PlaceholderPage(title: 'الشروط والأحكام'),
+          body: HelpScreen(),//PlaceholderPage(title: 'الشروط والأحكام'),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.chat),
