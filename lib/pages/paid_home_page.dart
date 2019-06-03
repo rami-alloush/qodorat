@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/placeholder_page.dart';
-import 'package:qodorat/pages/chat_page.dart';
+import 'package:qodorat/pages/start_chat_page.dart';
 
 class PaidHomePage extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class PaidHomePageState extends State<PaidHomePage>
         icon: new Icon(Icons.chat),
         title: 'المحادثة',
         color: Colors.deepPurple,
-        body: ChatScreen(),
+        body: StartChatPage(),
         vsync: this,
       ),
       new AppPage(

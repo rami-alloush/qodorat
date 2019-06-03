@@ -32,12 +32,18 @@ class DatabaseService {
   }
 
   /// Get a stream of a single document
-  Stream<User> streamUser(FirebaseUser user) {
+  Stream<ChatThread> streamChat(FirebaseUser user) {
     return _db
-        .collection('users')
+        .collection('chats')
         .document(user.uid)
         .snapshots()
-        .map((snap) => User.fromMap(snap.data));
+        .map((snap) => ChatThread.fromMap(snap.data));
+  }
+
+  Future<void> createChat(FirebaseUser user) {
+    return _db.collection('chats').document(user.uid).setData({
+      'email': '${user.email}',
+    });
   }
 
   /// Messages
@@ -51,12 +57,12 @@ class DatabaseService {
   }
 
   /// Query a subcollection
-  Stream<List<Weapon>> streamWeapons(FirebaseUser user) {
-    var ref = _db.collection('heroes').document(user.uid).collection('weapons');
-
-    return ref.snapshots().map((list) =>
-        list.documents.map((doc) => Weapon.fromFirestore(doc)).toList());
-  }
+//  Stream<List<Weapon>> streamWeapons(FirebaseUser user) {
+//    var ref = _db.collection('heroes').document(user.uid).collection('weapons');
+//
+//    return ref.snapshots().map((list) =>
+//        list.documents.map((doc) => Weapon.fromFirestore(doc)).toList());
+//  }
 
   Future<void> addWeapon(FirebaseUser user, dynamic weapon) {
     return _db

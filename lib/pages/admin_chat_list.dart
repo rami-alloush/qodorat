@@ -44,7 +44,7 @@ class ChaatItem extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         title: Text(document['email']),
-        subtitle: Text(document['phone']),
+//        subtitle: Text(document['phone']),
 //        trailing: document['paid']
 //            ? Icon(
 //          Icons.done_all,

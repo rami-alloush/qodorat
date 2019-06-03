@@ -17,23 +17,26 @@ class User {
 
 }
 
-class Weapon {
+class ChatThread {
   final String id;
-  final String name;
-  final int hitpoints;
-  final String img;
+  final String email;
 
-  Weapon({ this.id, this.name, this.hitpoints, this.img, });
+  ChatThread({ this.id, this.email});
 
-  factory Weapon.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data;
-    
-    return Weapon(
-      id: doc.documentID,
-      name: data['name'] ?? '',
-      hitpoints: data['hitpoints'] ?? 0,
-      img: data['img'] ?? ''
+  factory ChatThread.fromMap(Map data) {
+    return ChatThread(
+      id: data['id'] ?? '',
+      email: data['email'] ?? '',
     );
   }
+
+//  factory ChatThread.fromFirestore(DocumentSnapshot doc) {
+//    Map data = doc.data;
+//
+//    return ChatThread(
+//      id: doc.documentID,
+//      email: data['email'] ?? '',
+//    );
+//  }
 
 }

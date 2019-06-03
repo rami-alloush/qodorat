@@ -200,3 +200,33 @@ class ChatMessage extends StatelessWidget {
               ));
   }
 }
+
+//Container(
+//margin: const EdgeInsets.symmetric(vertical: 10.0),
+//child: new Row(
+//crossAxisAlignment: CrossAxisAlignment.start,
+//children: <Widget>[
+//// Avatar
+//new Container(
+//margin: const EdgeInsets.only(right: 16.0, left: 8.0),
+//child: new CircleAvatar(child: Icon(Icons.settings)),
+//),
+//// Message
+//Expanded(
+//child: Column(
+//crossAxisAlignment: CrossAxisAlignment.start,
+//children: <Widget>[
+//Text(
+//document["sender"],
+//style: Theme.of(context).textTheme.subtitle,
+//),
+//Container(
+//margin: const EdgeInsets.only(top: 5.0),
+//child: Text(document["text"]),
+//),
+//],
+//),
+//),
+//],
+//),
+//)
