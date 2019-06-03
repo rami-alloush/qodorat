@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/placeholder_page.dart';
+import 'package:qodorat/pages/upgrade_benefits.dart';
 import 'package:qodorat/pages/start_chat_page.dart';
 import 'package:qodorat/pages/terms_and_conditions_page.dart';
 
@@ -24,7 +24,7 @@ class GuestHomePageState extends State<GuestHomePage>
           icon: new Icon(Icons.stars),
           title: 'مزايا الإشتراك',
           color: Colors.deepOrange.shade600,
-          body: PlaceholderPage(title: 'مزايا الإشتراك'),
+          body: UpgradeBenefitsPage(), //PlaceholderPage(title: 'مزايا الإشتراك'),
           vsync: this),
       new AppPage(
           icon: new Icon(Icons.import_contacts),

@@ -36,7 +36,11 @@ dependencies:
   webview_flutter: ^0.3.9 # needs iOS config https://pub.dev/packages/webview_flutter
 
   provider: 2.0.0+1
+  rxdart: ^0.18.1
   meta: 1.1.6
+
+  path_drawing: ^0.2.4
+  flutter_svg: ^0.5.1
 
 dev_dependencies:
   flutter_test:
