@@ -31,6 +31,12 @@ class DatabaseService {
     return User.fromMap(snap.data).paid;
   }
 
+  Future<void> upgradeUser(userUID) async {
+    return _db.collection('users').document(userUID).updateData({
+      'paid': true,
+    });
+  }
+
   /// Get a stream of a single document
   Stream<ChatThread> streamChat(FirebaseUser user) {
     return _db
@@ -40,9 +46,9 @@ class DatabaseService {
         .map((snap) => ChatThread.fromMap(snap.data));
   }
 
-  Future<void> createChat(FirebaseUser user) {
-    return _db.collection('chats').document(user.uid).setData({
-      'email': '${user.email}',
+  Future<void> createChat(userUID, userEmail) {
+    return _db.collection('chats').document(userUID).setData({
+      'email': '$userEmail',
     });
   }
 

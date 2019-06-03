@@ -24,7 +24,7 @@ class StartChatPage extends StatelessWidget {
             return Center(
               child: RaisedButton(
                   child: Text('بدأ المحادثة مع الإدارة'),
-                  onPressed: () => db.createChat(user)),
+                  onPressed: () => db.createChat(user.uid, user.email)),
             );
           }
         },

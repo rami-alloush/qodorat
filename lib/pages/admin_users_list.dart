@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_ui/firestore_ui.dart';
-import 'package:qodorat/pages/chat_page.dart';
+import 'package:qodorat/pages/admin_user_details_page.dart';
 
 class UsersListPage extends StatelessWidget {
   @override
@@ -58,7 +58,7 @@ class UserItem extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ChatScreen(targetUID: document.documentID))),
+                    UserDetails(userDoc: document))),
       ),
     );
   }

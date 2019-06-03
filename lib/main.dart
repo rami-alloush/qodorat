@@ -4,14 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
 import 'package:qodorat/pages/admin_home_page.dart';
 import 'package:qodorat/pages/paid_home_page.dart';
 import 'package:qodorat/pages/guest_home_page.dart';
 import 'package:qodorat/db.dart';
-import 'package:qodorat/pages/home_page.dart';
-import 'package:qodorat/pages/chat_page.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
