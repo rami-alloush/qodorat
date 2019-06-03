@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
 import 'package:qodorat/pages/admin_home_page.dart';
 import 'package:qodorat/pages/paid_home_page.dart';
@@ -22,7 +23,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(
-            stream: FirebaseAuth.instance.onAuthStateChanged)
+            stream: FirebaseAuth.instance.onAuthStateChanged),
+//        Stream<Firestore>.value(
+//            value: Firestore.instance.settings(
+//                timestampsInSnapshotsEnabled: true,
+//                persistenceEnabled: true,
+//                sslEnabled: true), ;
+//        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -55,22 +62,22 @@ class CheckLogin extends StatelessWidget {
 
     final _loadingScaffold = Scaffold(
         body: Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: [Colors.deepOrange, Colors.orange[600]],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight),
-      ),
-      child: Center(
-        child: new Text(
-          'جاري التحميل ...',
-          style: TextStyle(
-            color: Colors.white,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.deepOrange, Colors.orange[600]],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
           ),
-        ),
-      ),
-    ));
+          child: Center(
+            child: new Text(
+              'جاري التحميل ...',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ));
 
     // Test Page
 //    return ChatScreen();
@@ -98,22 +105,22 @@ class CheckLogin extends StatelessWidget {
                   if (snapshot.hasError)
                     return Scaffold(
                         body: Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.deepOrange, Colors.orange[600]],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
-                      ),
-                      child: Center(
-                        child: new Text(
-                          'Error: ${snapshot.error}',
-                          style: TextStyle(
-                            color: Colors.white,
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Colors.deepOrange, Colors.orange[600]],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
                           ),
-                        ),
-                      ),
-                    ));
+                          child: Center(
+                            child: new Text(
+                              'Error: ${snapshot.error}',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ));
                   print('isPaid? ${snapshot.data}');
                   if (snapshot.data) {
                     // Paid user

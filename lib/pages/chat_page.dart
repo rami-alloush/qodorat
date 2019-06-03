@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,8 +12,9 @@ final db = DatabaseService();
 final analytics = new FirebaseAnalytics();
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen({this.targetUID});
+  ChatScreen({this.targetUID, this.userEmail});
 
+  final userEmail;
   final targetUID;
 
   @override
@@ -24,19 +27,35 @@ class ChatScreenState extends State<ChatScreen> {
   bool isAdmin = false;
   FirebaseUser user;
   var _chatDocID;
+  Firestore _firestore = Firestore.instance;
+
+  _setFirestoreSettings() async {
+    await _firestore.settings(
+        timestampsInSnapshotsEnabled: true,
+        persistenceEnabled: true,
+        sslEnabled: true);
+  }
+
+  @override
+  void initState() {
+    _setFirestoreSettings();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     user = Provider.of<FirebaseUser>(context);
+
     isAdmin = widget.targetUID != null ? true : false;
     _chatDocID = widget.targetUID == null ? user.uid : widget.targetUID;
 
     return Scaffold(
+      appBar: isAdmin ? AppBar(title: Text(widget.userEmail)) : null,
       body: Column(
         children: <Widget>[
           new Flexible(
             child: FirestoreAnimatedList(
-              query: Firestore.instance
+              query: _firestore
                   .collection('chats')
                   .document(_chatDocID)
                   .collection("messages")
@@ -53,9 +72,10 @@ class ChatScreenState extends State<ChatScreen> {
                 return FadeTransition(
                     opacity: animation,
                     child: ChatMessage(
-                      text: snapshot['text'],
+                      document: snapshot,
                       animation: animation,
                       user: user,
+                      isAdmin: isAdmin,
                     ));
               },
             ), // end of FirestoreAnimatedList
@@ -120,11 +140,13 @@ class ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text, this.animation, this.user});
+  ChatMessage({this.document, this.animation, this.user, this.isAdmin});
 
-  final String text;
-  final Animation animation;
-  final FirebaseUser user;
+  final document;
+  final animation;
+  final user;
+  final isAdmin;
+  final formatter = DateFormat("yyyy-MM-dd | h:ma"); //.yMd().add_jm(); //
 
   @override
   Widget build(BuildContext context) {
@@ -132,34 +154,49 @@ class ChatMessage extends StatelessWidget {
         sizeFactor:
             CurvedAnimation(parent: animation, curve: Curves.linearToEaseOut),
         axisAlignment: -10.0,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10.0),
-          child: new Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Avatar
-              new Container(
-                margin: const EdgeInsets.only(right: 16.0, left: 8.0),
-                child: new CircleAvatar(child: Icon(Icons.settings)),
-              ),
-              // Message
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      user.uid,
-                      style: Theme.of(context).textTheme.subtitle,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 5.0),
-                      child: new Text(text),
-                    ),
-                  ],
+        child: document["sender"] == user.uid
+            // Own message (Right)
+            ? ListTile(
+                leading: CircleAvatar(
+                  child: Icon(
+                    isAdmin ? Icons.settings : Icons.sentiment_satisfied,
+                    color: Colors.purple,
+                  ),
+                  backgroundColor: Colors.white,
                 ),
-              ),
-            ],
-          ),
-        ));
+                title: Container(
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.purple.shade100,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(16.0),
+                        )),
+                    child: Text(document['text'])),
+                subtitle: Text(
+                  formatter.format(document['time'].toDate()),
+                  style: TextStyle(fontSize: 14.0),
+                ),
+              )
+            // Other message (Left)
+            : ListTile(
+                trailing: CircleAvatar(
+                  child: Icon(
+                    isAdmin ? Icons.sentiment_satisfied : Icons.settings,
+                  ),
+                  backgroundColor: Colors.white,
+                ),
+                title: Container(
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(16.0),
+                        )),
+                    child: Text(document['text'])),
+                subtitle: Text(
+                  formatter.format(document['time'].toDate()),
+                  style: TextStyle(fontSize: 14.0),
+                ),
+              ));
   }
 }

@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:qodorat/pages/chat_page.dart';
 
-class ChatListPage extends StatelessWidget {
+class UsersListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FirestoreAnimatedList(
-      query: Firestore.instance.collection('chats').snapshots(),
+      query: Firestore.instance.collection('users').orderBy("paid").snapshots(),
       padding: new EdgeInsets.all(8.0),
       itemBuilder: (
         BuildContext context,
@@ -17,7 +17,7 @@ class ChatListPage extends StatelessWidget {
       ) {
         return FadeTransition(
             opacity: animation,
-            child: ChaatItem(
+            child: UserItem(
               document: snapshot,
               animation: animation,
             ));
@@ -26,8 +26,8 @@ class ChatListPage extends StatelessWidget {
   }
 }
 
-class ChaatItem extends StatelessWidget {
-  ChaatItem({this.document, this.animation});
+class UserItem extends StatelessWidget {
+  UserItem({this.document, this.animation});
 
   final DocumentSnapshot document;
   final Animation animation;
@@ -45,22 +45,20 @@ class ChaatItem extends StatelessWidget {
         ),
         title: Text(document['email']),
         subtitle: Text(document['phone']),
-//        trailing: document['paid']
-//            ? Icon(
-//          Icons.done_all,
-//          color: Colors.green,
-//        )
-//            : Icon(
-//          Icons.do_not_disturb,
-//          color: Colors.red,
-//        ),
+        trailing: document['paid']
+            ? Icon(
+                Icons.done_all,
+                color: Colors.green,
+              )
+            : Icon(
+                Icons.do_not_disturb,
+                color: Colors.red,
+              ),
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChatScreen(
-                      targetUID: document.documentID,
-                      userEmail: document['email'],
-                    ))),
+                builder: (context) =>
+                    ChatScreen(targetUID: document.documentID))),
       ),
     );
   }

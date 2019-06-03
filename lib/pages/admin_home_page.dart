@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/placeholder_page.dart';
 import 'package:qodorat/pages/admin_chat_list.dart';
+import 'package:qodorat/pages/admin_users_list.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override
@@ -46,6 +47,7 @@ class AdminHomePageState extends State<AdminHomePage>
   List<AppPage> _items;
   int _currentIndex = 0;
   var _mainColor;
+  var _mainTitle;
 
   getCurrentUser() async {
     return await FirebaseAuth.instance.currentUser();
@@ -66,7 +68,7 @@ class AdminHomePageState extends State<AdminHomePage>
         icon: new Icon(Icons.group),
         title: 'المستخدمين',
         color: Colors.brown,
-        body: PlaceholderPage(title: 'المستخدمين'),
+        body: UsersListPage(),
         vsync: this,
       ),
       new AppPage(
@@ -132,13 +134,14 @@ class AdminHomePageState extends State<AdminHomePage>
           _currentIndex = int;
           _items[_currentIndex].controller.forward();
           _mainColor = _items[_currentIndex]._color;
+          _mainTitle = _items[_currentIndex]._title;
         });
       },
     );
 
     return new Scaffold(
       appBar: AppBar(
-        title: Text("لوحة التحكم"),
+        title: Text(_mainTitle ?? "لوحة الدارس"),
         backgroundColor: _mainColor,
       ),
       body: new Center(

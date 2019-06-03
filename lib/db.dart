@@ -6,6 +6,13 @@ import 'models.dart';
 class DatabaseService {
   final Firestore _db = Firestore.instance;
 
+//  DatabaseService() async {
+//    String v =  _db.settings(
+//        timestampsInSnapshotsEnabled: true,
+//        persistenceEnabled: true,
+//        sslEnabled: true);
+//  }
+
   Future<void> createUser(FirebaseUser user, String phone) {
     return _db.collection('users').document(user.uid).setData({
       'email': '${user.email}',
@@ -39,7 +46,7 @@ class DatabaseService {
       ..collection('messages').add({
         'text': text,
         'sender': '${user.uid}',
-        'time': FieldValue.serverTimestamp(),
+        'time': DateTime.now() //FieldValue.serverTimestamp(),
       });
   }
 
