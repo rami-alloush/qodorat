@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
+import 'package:intro_slider/slide_object.dart';
 
 // IntroScreen Code
 class IntroScreen extends StatefulWidget {

@@ -150,7 +150,7 @@ class BackDropState extends State<BackDrop>
 
   double get _backdropHeight {
     final RenderBox renderBox = _backdropKey.currentContext.findRenderObject();
-    return 250; //math.max(0.0, renderBox.size.height - _kBackAppBarHeight);
+    return math.max(0.0, renderBox.size.height - _kBackAppBarHeight);
   }
 
   void _handleVerticalDragUpdate(DragUpdateDetails details) {
@@ -192,7 +192,7 @@ class BackDropState extends State<BackDrop>
     List<Widget> layers = [
       AnimatedBackground(
         t: t.clamp(0.00001, 1.0),
-        numItems: 5, // Check background items
+        numItems: 3, // Check background items **
         progress: _controller,
       ),
       new SafeArea(
@@ -1065,4 +1065,75 @@ Path createPolygon(List<Offset> offsets, Offset shift) {
   }
 
   return path;
+}
+
+// Used for titles transform
+class CrossFadeTransition extends AnimatedWidget {
+  const CrossFadeTransition({
+    Key key,
+    this.alignment: Alignment.center,
+    Animation<double> progress,
+    this.child0,
+    this.child1,
+    this.children,
+  }) : super(key: key, listenable: progress);
+
+  final AlignmentGeometry alignment;
+  final Widget child0;
+  final Widget child1;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final Animation<double> progress = listenable;
+    final double progressPerChild = 1.0 / (children.length - 1);
+    final List<Widget> opacityChildren = [];
+
+    for (int i = 0; i < children.length; i++) {
+      Animation<double> parent;
+      Curve curve;
+
+      double progressAtFull = i * progressPerChild;
+
+      double start, end;
+
+      if (progress.value <= progressAtFull) {
+        parent = progress;
+
+        start = (i - 1) * progressPerChild;
+        end = (i) * progressPerChild;
+
+        start = start.clamp(0.0, 1.0);
+        end = end.clamp(0.0, 1.0);
+
+        curve = Interval(start, end);
+      } else {
+        parent = ReverseAnimation(progress);
+
+        start = (i * progressPerChild);
+        end = (i + 1) * progressPerChild;
+
+        start = start.clamp(0.0, 1.0);
+        end = end.clamp(0.0, 1.0);
+
+        curve = Interval(start, end).flipped;
+      }
+
+      double opacity = CurvedAnimation(parent: parent, curve: curve).value;
+      if (progress.value < start || progress.value > end) {
+        opacity = 0.0;
+      } else if (start == end) {
+        opacity = 1.0;
+      }
+
+      opacityChildren.add(
+        Opacity(
+          opacity: opacity,
+          child: children[i],
+        ),
+      );
+    }
+
+    return Stack(alignment: alignment, children: opacityChildren);
+  }
 }

@@ -40,8 +40,8 @@ class MyApp extends StatelessWidget {
         ],
         theme: ThemeData(
             brightness: Brightness.light,
-            primaryColor: Colors.deepOrange.shade600,
-            primarySwatch: Colors.orange,
+            primaryColor: Colors.lightGreen,
+            primarySwatch: Colors.green,
             buttonTheme: ButtonThemeData(buttonColor: Colors.white)),
         home: CheckLogin(),
       ),

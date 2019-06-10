@@ -7,15 +7,15 @@
         <shape>
             <gradient
                 android:angle="135"
-                android:endColor="#FF5722"
-                android:startColor="#FB8C00" />
+                android:endColor="#FFF"
+                android:startColor="#FFF" />
         </shape>
     </item>
 
     <item
-        android:width="200dp"
-        android:height="200dp"
-        android:drawable="@drawable/icons8_edit_400"
+        android:width="150dp"
+        android:height="300dp"
+        android:drawable="@drawable/Logo"
         android:gravity="center" />
 
 </layer-list>

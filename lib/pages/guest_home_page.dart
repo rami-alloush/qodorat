@@ -23,7 +23,7 @@ class GuestHomePageState extends State<GuestHomePage>
       new AppPage(
           icon: new Icon(Icons.stars),
           title: 'مزايا الإشتراك',
-          color: Colors.deepOrange.shade600,
+          color: Colors.purple,
           body: UpgradeBenefitsPage(), //PlaceholderPage(title: 'مزايا الإشتراك'),
           vsync: this),
       new AppPage(
@@ -99,10 +99,10 @@ class GuestHomePageState extends State<GuestHomePage>
     );
 
     return new Scaffold(
-      appBar: AppBar(
-        title: Text("لوحة الضيف"),
-        backgroundColor: _mainColor,
-      ),
+//      appBar: AppBar(
+//        title: Text("لوحة الضيف"),
+//        backgroundColor: _mainColor,
+//      ),
       body: new Center(
         child: _buildPageStack(),
       ),
