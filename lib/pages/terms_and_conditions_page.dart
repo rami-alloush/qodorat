@@ -25,10 +25,10 @@ class HelpScreenState extends State<HelpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('الشروط والأحكام'),
-        backgroundColor: Colors.brown,
-      ),
+//      appBar: AppBar(
+////        title: Text('الشروط والأحكام'),
+//        backgroundColor: Colors.brown,
+//      ),
       body:
 //      InAppWebView(
 //        initialUrl: "https://flutter.io/",

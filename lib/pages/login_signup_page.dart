@@ -50,7 +50,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     bool _seen = (prefs.getBool('seen') ?? false);
     if (!_seen) {
       // Never saw intro
-      prefs.setBool('seen', true);
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => IntroScreen(),
         settings: RouteSettings(name: 'IntroScreen'),
@@ -63,21 +62,25 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('اختبر قدراتك'),
+          title: new Text('طور قدراتك'),
         ),
-        body: Builder(
-            // Create an inner BuildContext so that the onPressed methods
-            // can refer to the Scaffold with Scaffold.of().
-            builder: (BuildContext context) {
-          return Stack(
-            children: <Widget>[
-              _formMode == FormMode.LOGIN
-                  ? _showLoginBody(context)
-                  : _showSignUpBody(context),
-              _showCircularProgress(),
-            ],
-          );
-        }));
+        backgroundColor: Colors.white,
+        body: Container(
+            color: Colors.white,
+            child: Builder(
+                // Create an inner BuildContext so that the onPressed methods
+                // can refer to the Scaffold with Scaffold.of().
+                builder: (BuildContext context) {
+              return Stack(
+                children: <Widget>[
+                  _formMode == FormMode.LOGIN
+                      ? _showLoginBody(context)
+                      : _showSignUpBody(context),
+                  _showCircularProgress(),
+                ],
+              );
+            }))
+    );
   }
 
   Widget _showLoginBody(BuildContext context) {
@@ -209,7 +212,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.brown,
             child: _formMode == FormMode.LOGIN
                 ? new Text('تسجيل الدخول',
                     style: new TextStyle(fontSize: 20.0, color: Colors.white))

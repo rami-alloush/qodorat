@@ -23,26 +23,26 @@ class GuestHomePageState extends State<GuestHomePage>
       new AppPage(
           icon: new Icon(Icons.stars),
           title: 'مزايا الإشتراك',
-          color: Colors.purple,
-          body: UpgradeBenefitsPage(), //PlaceholderPage(title: 'مزايا الإشتراك'),
+          color: Colors.lightGreen,
+          body: UpgradeBenefitsPage(),
           vsync: this),
       new AppPage(
           icon: new Icon(Icons.import_contacts),
           title: 'الشروط والأحكام',
-          color: Colors.brown,
-          body: HelpScreen(),//PlaceholderPage(title: 'الشروط والأحكام'),
+          color: Colors.green,
+          body: HelpScreen(),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.chat),
         title: 'المحادثة',
-        color: Colors.deepPurple,
+        color: Colors.lightGreen,
         body: StartChatPage(),
         vsync: this,
       ),
       new AppPage(
         icon: new Icon(Icons.info_outline),
         title: 'معلومات',
-        color: Colors.blueAccent.shade700,
+        color: Colors.green,
         body: Center(
             child: RaisedButton(
                 child: Text('تسجيل الخروج'),

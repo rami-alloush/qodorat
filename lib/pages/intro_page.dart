@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // IntroScreen Code
 class IntroScreen extends StatefulWidget {
@@ -19,33 +20,60 @@ class IntroScreenState extends State<IntroScreen> {
 
     slides.add(
       new Slide(
-        title: "تعلم",
-        description: "تعلم كل ما يخط اختبار القدرات سواء كمي أو كيفي",
-        pathImage: "assets/photo_eraser.png",
-        backgroundColor: Color(0xfff5a623),
+        title: "تعلّم",
+        styleTitle: TextStyle(
+            color: Colors.white,
+            fontSize: 32.0,
+            fontWeight: FontWeight.bold,),
+        description: "تعلم كل ما يخط اختبار القدرات العامة سواء كمي أو لفظي",
+        styleDescription: TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,),
+        pathImage: "assets/bulb.png",
+        backgroundColor: Color(0xffb6dbce),
       ),
     );
     slides.add(
       new Slide(
         title: "تفاعل",
+        styleTitle: TextStyle(
+          color: Colors.white,
+          fontSize: 32.0,
+          fontWeight: FontWeight.bold,),
         description: "دروس تفاعليه لتثبيت المعلومة في كافة المستويات",
-        pathImage: "assets/photo_pencil.png",
-        backgroundColor: Color(0xff203152),
+        styleDescription: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,),
+        pathImage: "assets/pencil-clipart.png",
+        backgroundColor: Color(0xffb3d5e9),
       ),
     );
     slides.add(
       new Slide(
         title: "قيّم",
+        styleTitle: TextStyle(
+          color: Colors.white,
+          fontSize: 32.0,
+          fontWeight: FontWeight.bold,),
         description:
-        "اختبار قبل وبعد كل مستوى للتأكد من فهمك واستيعابك للمحتوى بشكل مثالي",
-        pathImage: "assets/photo_ruler.png",
-        backgroundColor: Color(0xff9932CC),
+            "اختبار قبل وبعد كل مستوى للتأكد من فهمك واستيعابك للمحتوى بشكل مثالي",
+        styleDescription: TextStyle(
+          color: Colors.white,
+          fontSize: 24.0,),
+        pathImage: "assets/paper-notes.png",
+        backgroundColor: Color(0xffc0a9ca),
       ),
     );
   }
 
   void onDonePress() {
     Navigator.of(context).pop();
+    updatePrefs();
+  }
+
+  Future updatePrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('seen', true);
   }
 
   @override
@@ -64,6 +92,15 @@ class IntroScreenState extends State<IntroScreen> {
         style: TextStyle(color: Colors.white),
       ),
       onDonePress: this.onDonePress,
+
+      // Dot indicator
+      colorDot: Colors.grey,
+      colorActiveDot: Colors.grey,
+      sizeDot: 8.0,
+
+      // Show or hide status bar
+//      shouldHideStatusBar: true,
+//      backgroundColorAllSlides: Colors.grey,
     );
   }
 }

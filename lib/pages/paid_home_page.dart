@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/placeholder_page.dart';
+import 'package:qodorat/pages/paid_lessons.dart';
 import 'package:qodorat/pages/start_chat_page.dart';
 
 class PaidHomePage extends StatefulWidget {
@@ -22,20 +22,20 @@ class PaidHomePageState extends State<PaidHomePage>
       new AppPage(
           icon: new Icon(Icons.content_paste),
           title: 'الدروس',
-          color: Colors.deepOrange.shade600,
-          body: PlaceholderPage(title: 'الدروس'),
+          color: Colors.lightGreen, //deepOrange.shade600,
+          body: PaidLessonsPage(), //PlaceholderPage(title: 'الدروس'),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.chat),
         title: 'المحادثة',
-        color: Colors.deepPurple,
+        color: Colors.green, //deepPurple,
         body: StartChatPage(),
         vsync: this,
       ),
       new AppPage(
         icon: new Icon(Icons.info_outline),
         title: 'معلومات',
-        color: Colors.blueAccent.shade700,
+        color: Colors.lightGreen, //blueAccent.shade700,
         body: Center(
             child: RaisedButton(
                 child: Text('تسجيل الخروج'),
@@ -94,10 +94,10 @@ class PaidHomePageState extends State<PaidHomePage>
     );
 
     return new Scaffold(
-      appBar: AppBar(
-        title: Text(_mainTitle ?? "لوحة الدارس"),
-        backgroundColor: _mainColor,
-      ),
+//      appBar: AppBar(
+//        title: Text(_mainTitle ?? "لوحة الدارس"),
+//        backgroundColor: _mainColor,
+//      ),
       body: new Center(
         child: _buildPageStack(),
       ),

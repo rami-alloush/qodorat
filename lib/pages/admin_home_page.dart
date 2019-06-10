@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/pages/placeholder_page.dart';
 import 'package:qodorat/pages/admin_chat_list.dart';
 import 'package:qodorat/pages/admin_users_list.dart';
+import 'package:qodorat/pages/paid_lessons.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override
@@ -46,7 +47,7 @@ class AdminHomePageState extends State<AdminHomePage>
     with TickerProviderStateMixin {
   List<AppPage> _items;
   int _currentIndex = 0;
-  var _mainColor;
+  var _mainColor = Colors.lightGreen;
   var _mainTitle;
 
   getCurrentUser() async {
@@ -61,27 +62,27 @@ class AdminHomePageState extends State<AdminHomePage>
       new AppPage(
           icon: new Icon(Icons.content_paste),
           title: 'الدروس',
-          color: Colors.deepOrange.shade600,
-          body: PlaceholderPage(title: 'الدروس'),
+          color: Colors.lightGreen, //deepOrange.shade600,
+          body: PaidLessonsPage(),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.group),
         title: 'المستخدمين',
-        color: Colors.brown,
+        color: Colors.green,
         body: UsersListPage(),
         vsync: this,
       ),
       new AppPage(
         icon: new Icon(Icons.chat),
         title: 'المحادثات',
-        color: Colors.deepPurple,
+        color: Colors.lightGreen, //
         body: ChatListPage(), //ChatScreen(targetUID: "theTargetUID",), //PlaceholderPage(title: 'المحادثات'),
         vsync: this,
       ),
       new AppPage(
         icon: new Icon(Icons.info_outline),
         title: 'معلومات',
-        color: Colors.blueAccent.shade700,
+        color: Colors.green, //blueAccent.shade700,
         body: Center(
             child: RaisedButton(
                 child: Text('تسجيل الخروج'),
@@ -141,7 +142,7 @@ class AdminHomePageState extends State<AdminHomePage>
 
     return new Scaffold(
       appBar: AppBar(
-        title: Text(_mainTitle ?? "لوحة الدارس"),
+        title: Text(_mainTitle ?? "لوحة التحكم"),
         backgroundColor: _mainColor,
       ),
       body: new Center(

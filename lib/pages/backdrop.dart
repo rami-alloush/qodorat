@@ -581,8 +581,9 @@ class MyCustomPainter extends CustomPainter {
 }
 
 class AnimatedBackground extends AnimatedWidget {
+  // * Colors to change
   static const List<MaterialColor> colors = [
-    Colors.purple,
+    Colors.lightGreen,
     Colors.blue,
     Colors.green,
     Colors.deepOrange

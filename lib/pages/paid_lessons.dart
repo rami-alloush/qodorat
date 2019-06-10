@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'backdrop.dart';
 import 'package:qodorat/bloc/scroll_bloc.dart';
 
-class UpgradeBenefitsPage extends StatefulWidget {
+class PaidLessonsPage extends StatefulWidget {
   @override
-  _UpgradeBenefitsPageState createState() => _UpgradeBenefitsPageState();
+  _PaidLessonsPageState createState() => _PaidLessonsPageState();
 }
 
-class _UpgradeBenefitsPageState extends State<UpgradeBenefitsPage> {
+class _PaidLessonsPageState extends State<PaidLessonsPage> {
   final GlobalKey<BackDropState> _backdropKey = GlobalKey<BackDropState>();
 
   ScrollBloc scrollBloc;
@@ -28,7 +28,7 @@ class _UpgradeBenefitsPageState extends State<UpgradeBenefitsPage> {
           title: "My Page Title",
         ),
         backTitle: Text(
-          'مزايا الإشتراك',
+          'الدروس',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -102,38 +102,46 @@ class MyBackLayerState extends State<MyBackLayer>
       BuildContext context, AnimationController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         // Titles
         Padding(
-            padding: const EdgeInsets.only(left: 48.0, bottom: 16.0),
+            padding:
+                const EdgeInsets.only(right: 48.0),
             child: CrossFadeTransition(
-              alignment: Alignment.centerLeft,
               progress: _controller,
               children: [
-                Text(
-                  "منهج متكامل",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w700),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "الاختبار الكمي",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
                 ),
-                Text(
-                  "  اختبارات عملية",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w700),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "الاختبار اللفظي",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
                 ),
-                Text(
-                  "تقييم للأداء",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w700),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "التدريبات",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
                 ),
               ],
             )),

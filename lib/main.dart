@@ -40,9 +40,10 @@ class MyApp extends StatelessWidget {
         ],
         theme: ThemeData(
             brightness: Brightness.light,
-            primaryColor: Colors.lightGreen,
+            backgroundColor: Colors.white,
+            primaryColor: Colors.greenAccent,
             primarySwatch: Colors.green,
-            buttonTheme: ButtonThemeData(buttonColor: Colors.white)),
+            buttonTheme: ButtonThemeData(buttonColor: Colors.green,)),
         home: CheckLogin(),
       ),
     );
@@ -62,7 +63,7 @@ class CheckLogin extends StatelessWidget {
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Colors.deepOrange, Colors.orange[600]],
+                colors: [Colors.white, Colors.grey],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight),
           ),
