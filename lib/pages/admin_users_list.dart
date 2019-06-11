@@ -55,10 +55,11 @@ class UserItem extends StatelessWidget {
                 color: Colors.red,
               ),
         onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    UserDetails(userDoc: document))),
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserDetails(userDoc: document),
+              ),
+            ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'backdrop.dart';
 import 'package:qodorat/bloc/scroll_bloc.dart';
+import 'package:qodorat/pages/section_page.dart';
 
 class PaidLessonsPage extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _PaidLessonsPageState extends State<PaidLessonsPage> {
         key: _backdropKey,
         scrollBloc: scrollBloc,
         backLayer: MyBackLayer(
-          title: "My Page Title",
+          title: "صفحة الدروس",
         ),
         backTitle: Text(
           'الدروس',
@@ -100,13 +101,22 @@ class MyBackLayerState extends State<MyBackLayer>
 
   Widget _buildPageSelector(
       BuildContext context, AnimationController controller) {
+    const List _Cat1Sections = ["هندسة", "جبر", "حساب", "تحليل بيانات"];
+    const List _Cat2Sections = [
+      "التناظر اللفظي",
+      "اكمال الجمل",
+      "المفردة الشاذة",
+      "استيعات المقروء",
+      "الخطأ السياقي"
+    ];
+    List _training = _Cat1Sections + _Cat2Sections;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // Titles
         Padding(
-            padding:
-                const EdgeInsets.only(right: 48.0),
+            padding: const EdgeInsets.only(right: 48.0),
             child: CrossFadeTransition(
               progress: _controller,
               children: [
@@ -160,7 +170,28 @@ class MyBackLayerState extends State<MyBackLayer>
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
-                    child: Text("المحتوى هنا"),
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => Divider(
+                            color: Colors.grey,
+                          ),
+                      itemCount: _Cat1Sections.length,
+                      itemBuilder: (context, index) => ListTile(
+                            title: Text(
+                              "${_Cat1Sections[index]}",
+                              style: TextStyle(fontSize: 24.0),
+                            ),
+                            onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SectionPage(
+                                          sectionCategory: 1,
+                                          sectionIndex: index,
+                                          sectionTitle: _Cat1Sections[index],
+                                        ),
+                                  ),
+                                ),
+                          ),
+                    ),
                   ),
                 ),
                 Card(
@@ -171,7 +202,32 @@ class MyBackLayerState extends State<MyBackLayer>
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
-                    child: Text("المحتوى هنا"),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                              color: Colors.grey,
+                            ),
+                        itemCount: _Cat2Sections.length,
+                        itemBuilder: (context, index) => ListTile(
+                              title: Text(
+                                "${_Cat2Sections[index]}",
+                                style: TextStyle(fontSize: 24.0),
+                              ),
+                              onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SectionPage(
+                                            sectionCategory: 2,
+                                            sectionIndex: index,
+                                            sectionTitle: _Cat2Sections[index],
+                                          ),
+                                    ),
+                                  ),
+                            ),
+                      ),
+                    ),
                   ),
                 ),
                 Card(
@@ -182,7 +238,21 @@ class MyBackLayerState extends State<MyBackLayer>
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
-                    child: Text("المحتوى هنا"),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                              color: Colors.grey,
+                            ),
+                        itemCount: _training.length,
+                        itemBuilder: (context, index) => ListTile(
+                                title: Text(
+                              "${_training[index]}",
+                              style: TextStyle(fontSize: 24.0),
+                            )),
+                      ),
+                    ),
                   ),
                 ),
               ]),

@@ -16,7 +16,6 @@ class StartChatPage extends StatelessWidget {
       body: StreamBuilder<ChatThread>(
         stream: db.streamChat(user),
         builder: (context, snapshot) {
-          print(snapshot);
           var chatThread = snapshot.data;
           if (chatThread != null) {
             return ChatScreen();

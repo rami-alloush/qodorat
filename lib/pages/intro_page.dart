@@ -25,7 +25,7 @@ class IntroScreenState extends State<IntroScreen> {
             color: Colors.white,
             fontSize: 32.0,
             fontWeight: FontWeight.bold,),
-        description: "تعلم كل ما يخط اختبار القدرات العامة سواء كمي أو لفظي",
+        description: "تعلم كل ما يخص اختبار القدرات العامة سواء كمي أو لفظي",
         styleDescription: TextStyle(
             color: Colors.white,
             fontSize: 24.0,),

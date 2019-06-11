@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             brightness: Brightness.light,
             backgroundColor: Colors.white,
-            primaryColor: Colors.greenAccent,
+            primaryColor: Colors.lightGreen,
             primarySwatch: Colors.green,
             buttonTheme: ButtonThemeData(buttonColor: Colors.green,)),
         home: CheckLogin(),
@@ -56,7 +56,7 @@ class CheckLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     final db = DatabaseService();
-    print("User: " + '$user');
+//    print("User: " + '$user');
 
     final _loadingScaffold = Scaffold(
         body: Container(

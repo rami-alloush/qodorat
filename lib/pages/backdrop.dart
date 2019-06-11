@@ -582,18 +582,18 @@ class MyCustomPainter extends CustomPainter {
 
 class AnimatedBackground extends AnimatedWidget {
   // * Colors to change
-  static const List<MaterialColor> colors = [
-    Colors.lightGreen,
-    Colors.blue,
-    Colors.green,
-    Colors.deepOrange
+  static const List colors = [
+    Colors.red,
+    Colors.pink,
+    Colors.red,
+    Colors.pink
   ];
 
   static final Path trianglePath =
       parseSvgPathData('M0,61 71.326,61 35.663,0.5 z');
   static final Paint trianglePaint = Paint()
     ..style = PaintingStyle.fill
-    ..color = Colors.green;
+    ..color = Colors.red;
 
   static final Path linePath = parseSvgPathData(
       'M100,6c0,3.3-2.7,6-6,6H6c-3.3,0-6-2.7-6-6l0,0c0-3.3,2.7-6,6-6h88C97.3,0,100,2.7,100,6L100,6z');
@@ -604,7 +604,7 @@ class AnimatedBackground extends AnimatedWidget {
   static final Path squarePath = parseSvgPathData('M0,0 0,100 100,100 100,0 z');
   static final Paint squarePaint = Paint()
     ..style = PaintingStyle.fill
-    ..color = Colors.cyan;
+    ..color = Colors.yellow;
 
   AnimatedBackground({
     Key key,
@@ -657,8 +657,8 @@ class AnimatedBackground extends AnimatedWidget {
                       center: const Alignment(0.7, -0.6), // near the top right
                       radius: 0.6,
                       colors: [
-                        Colors.yellow.shade600, // yellow sun
-                        Colors.yellow.shade300, // blue sky
+                        Colors.red.shade50, // yellow sun
+                        Colors.red.shade100, // blue sky
                       ],
                       stops: [0.4, 1.0],
                     ),
@@ -684,8 +684,8 @@ class AnimatedBackground extends AnimatedWidget {
                       center: const Alignment(0.7, -0.6), // near the top right
                       radius: 0.6,
                       colors: [
-                        Colors.yellow.shade600, // yellow sun
-                        Colors.yellow.shade300, // blue sky
+                        Colors.red.shade50, // yellow sun
+                        Colors.red.shade100, // blue sky
                       ],
                       stops: [0.4, 1.0],
                     ),

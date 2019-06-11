@@ -62,28 +62,15 @@ class DatabaseService {
       });
   }
 
-  /// Query a subcollection
-//  Stream<List<Weapon>> streamWeapons(FirebaseUser user) {
-//    var ref = _db.collection('heroes').document(user.uid).collection('weapons');
-//
-//    return ref.snapshots().map((list) =>
-//        list.documents.map((doc) => Weapon.fromFirestore(doc)).toList());
-//  }
+  /// Lessons
+  Stream<List<Lesson>> streamLessons(int sectionCategory, int sectionIndex) {
+    var ref = _db
+        .collection('lessons')
+        .where("sectionCategory", isEqualTo: sectionCategory)
+        .where("sectionIndex", isEqualTo: sectionIndex)
+        .orderBy("order");
 
-  Future<void> addWeapon(FirebaseUser user, dynamic weapon) {
-    return _db
-        .collection('heroes')
-        .document(user.uid)
-        .collection('weapons')
-        .add(weapon);
-  }
-
-  Future<void> removeWeapon(FirebaseUser user, String id) {
-    return _db
-        .collection('heroes')
-        .document(user.uid)
-        .collection('weapons')
-        .document(id)
-        .delete();
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Lesson.fromFirestore(doc)).toList());
   }
 }
