@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qodorat/db.dart';
 import 'package:qodorat/models.dart';
+import 'package:qodorat/pages/lesson_page.dart';
 
 class SectionPage extends StatefulWidget {
   SectionPage({
@@ -47,10 +48,15 @@ class LessonsList extends StatelessWidget {
               children: lessons.map((lesson) {
                 return Card(
                   child: ListTile(
-                    leading: Text(lesson.order.toString(),
-                        style: TextStyle(fontSize: 50)),
+                    leading: Text(
+                      lesson.order.toString(),
+                    ),
                     title: Text(lesson.title),
-//              onTap: () => DatabaseService().removeWeapon(user, weapon.id),
+                    onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LessonPage(lesson)),
+                        ),
                   ),
                 );
               }).toList(),
