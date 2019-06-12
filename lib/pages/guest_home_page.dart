@@ -29,8 +29,8 @@ class GuestHomePageState extends State<GuestHomePage>
       new AppPage(
           icon: new Icon(Icons.import_contacts),
           title: 'الشروط والأحكام',
-          color: Colors.green,
-          body: HelpScreen(),
+          color: Colors.lightGreen,
+          body: TAndRPage(),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.chat),
@@ -42,7 +42,7 @@ class GuestHomePageState extends State<GuestHomePage>
       new AppPage(
         icon: new Icon(Icons.info_outline),
         title: 'معلومات',
-        color: Colors.green,
+        color: Colors.lightGreen,
         body: Center(
             child: RaisedButton(
                 child: Text('تسجيل الخروج'),
