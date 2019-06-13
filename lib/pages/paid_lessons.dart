@@ -109,7 +109,6 @@ class MyBackLayerState extends State<MyBackLayer>
       "استيعات المقروء",
       "الخطأ السياقي"
     ];
-    List _training = _Cat1Sections + _Cat2Sections;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,12 +244,23 @@ class MyBackLayerState extends State<MyBackLayer>
                         separatorBuilder: (context, index) => Divider(
                               color: Colors.grey,
                             ),
-                        itemCount: _training.length,
+                        itemCount: 10,
                         itemBuilder: (context, index) => ListTile(
-                                title: Text(
-                              "${_training[index]}",
-                              style: TextStyle(fontSize: 24.0),
-                            )),
+                              title: Text(
+                                "تدريب ${index + 1}",
+                                style: TextStyle(fontSize: 24.0),
+                              ),
+                              onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SectionPage(
+                                            sectionCategory: 3,
+                                            sectionIndex: index,
+                                            sectionTitle: "تدريب ${index + 1}",
+                                          ),
+                                    ),
+                                  ),
+                            ),
                       ),
                     ),
                   ),
