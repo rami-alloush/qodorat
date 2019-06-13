@@ -73,4 +73,34 @@ class DatabaseService {
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Lesson.fromFirestore(doc)).toList());
   }
+
+  // Scores
+  Stream<Score> streamScore(String examID, FirebaseUser user) {
+    var ref = _db
+        .collection('users')
+        .document(user.uid)
+        .collection("scores")
+        .document(examID);
+
+    return ref.snapshots().map((doc) => Score.fromFirestore(doc));
+  }
+
+  Future<void> updateScoreOnDB(examID, user, score) {
+    return _db
+        .collection('users')
+        .document(user.uid)
+        .collection('scores')
+        .document(examID)
+        .setData({
+      'score': score,
+    });
+  }
+
+  /// Questions
+  Stream<List<Question>> streamQuestions(String examID) {
+    var ref = _db.collection('exams').document(examID).collection("questions");
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Question.fromFirestore(doc)).toList());
+  }
 }

@@ -22,22 +22,31 @@ class _LessonPageState extends State<LessonPage> {
   String _playerStatus = "";
   String _errorCode = '0';
 
-  void listener() {
-    if (_controller.value.playerState == PlayerState.ENDED) {
-      _showThankYouDialog();
-    }
-    setState(() {
-      _playerStatus = _controller.value.playerState.toString();
-      _errorCode = _controller.value.errorCode.toString();
-      print(_controller.value.toString());
-    });
-  }
+//  void listener() {
+//    if (_controller.value.playerState == PlayerState.ENDED) {
+//      _controller.seekTo(
+//        Duration(seconds: 0),
+//      );
+//      _showThankYouDialog();
+//    }
+////    setState(() {
+////      _playerStatus = _controller.value.playerState.toString();
+////      _errorCode = _controller.value.errorCode.toString();
+////      print(_controller.value.toString());
+////    });
+//  }
 
   @override
   void deactivate() {
     // This pauses video while navigating to next page.
     _controller.pause();
     super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -96,7 +105,7 @@ class _LessonPageState extends State<LessonPage> {
               ),
               onPlayerInitialized: (controller) {
                 _controller = controller;
-                _controller.addListener(listener);
+//                _controller.addListener(listener);
               },
             ),
             Expanded(
@@ -189,9 +198,22 @@ class _LessonPageState extends State<LessonPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        // return object of type Dialog
         return AlertDialog(
           title: Text("شكراً لك :)"),
           content: Text("تم اكمال محتوى الدرس بنجاح"),
+          actions: <Widget>[
+            RaisedButton(
+              child: Text(
+                "موافق",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );
