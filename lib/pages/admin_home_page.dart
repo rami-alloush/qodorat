@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/placeholder_page.dart';
 import 'package:qodorat/pages/admin_chat_list.dart';
 import 'package:qodorat/pages/admin_users_list.dart';
-import 'package:qodorat/pages/paid_lessons.dart';
+import 'package:qodorat/pages/admin_manage_content.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override
@@ -61,9 +60,9 @@ class AdminHomePageState extends State<AdminHomePage>
     _items = [
       new AppPage(
           icon: new Icon(Icons.content_paste),
-          title: 'الدروس',
+          title: 'المحتوى',
           color: Colors.lightGreen, //deepOrange.shade600,
-          body: PaidLessonsPage(),
+          body: ManageContent(),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.group),

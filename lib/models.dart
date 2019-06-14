@@ -1,17 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
+  final String id;
   final String email;
+  final String phone;
   final bool paid;
 
-  User({this.email, this.paid});
+  User({this.id, this.email, this.phone, this.paid});
 
   factory User.fromMap(Map data) {
     return User(
       email: data['email'] ?? '',
+      phone: data['phone'] ?? '',
       paid: data['paid'] ?? false,
     );
   }
+
+  factory User.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data;
+
+    return User(
+      id: doc.documentID,
+      email: data['email'] ?? 'لا يوجد بريد الأكتروني',
+      paid: data['paid'] ?? false,
+      phone: data['phone'] ?? 'لا يوجد رقم جوال',
+    );
+  }
+
 }
 
 class ChatThread {

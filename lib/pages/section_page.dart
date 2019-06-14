@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qodorat/db.dart';
 import 'package:qodorat/models.dart';
 import 'package:qodorat/pages/lesson_page.dart';

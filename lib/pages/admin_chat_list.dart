@@ -17,7 +17,7 @@ class ChatListPage extends StatelessWidget {
       ) {
         return FadeTransition(
             opacity: animation,
-            child: ChaatItem(
+            child: ChatItem(
               document: snapshot,
               animation: animation,
             ));
@@ -26,8 +26,8 @@ class ChatListPage extends StatelessWidget {
   }
 }
 
-class ChaatItem extends StatelessWidget {
-  ChaatItem({this.document, this.animation});
+class ChatItem extends StatelessWidget {
+  ChatItem({this.document, this.animation});
 
   final DocumentSnapshot document;
   final Animation animation;

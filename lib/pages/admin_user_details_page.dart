@@ -2,33 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:qodorat/pages/chat_page.dart';
 
 class UserDetails extends StatelessWidget {
-  UserDetails({@required this.userDoc});
+  UserDetails({@required this.user});
 
-  final userDoc;
+  final user;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text(userDoc["email"]),
+          title: Text(user.email),
           centerTitle: true,
         ),
         body: Column(children: <Widget>[
           Card(
               child: ListTile(
             leading: Icon(Icons.alternate_email),
-            title: Text(userDoc["email"]),
+            title: Text(user.email),
             subtitle: Text('البريد الإلكتروني'),
           )),
           Card(
               child: ListTile(
             leading: Icon(Icons.phone),
-            title: Text(userDoc["phone"]),
+            title: Text(user.phone),
             subtitle: Text('رقم الجوال'),
           )),
           Card(
-              child: userDoc["paid"]
+              child: user.paid
                   ? ListTile(
                       leading: Icon(Icons.done_all),
                       title: Text("عضو دائم - مدفوع"),
@@ -48,13 +48,13 @@ class UserDetails extends StatelessWidget {
                 child: RaisedButton(
                   child: Text("المحادثة"),
                   onPressed: () {
-                    db.createChat(userDoc.documentID, userDoc["email"]);
+                    db.createChat(user.id, user.email);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => ChatScreen(
-                                  targetUID: userDoc.documentID,
-                                  userEmail: userDoc['email'],
+                                  targetUID: user.id,
+                                  userEmail: user.email,
                                 )));
                   },
                 ),
@@ -64,11 +64,11 @@ class UserDetails extends StatelessWidget {
                 height: 50.0,
                 child: RaisedButton(
                   child: Text("ترقية المستخدم"),
-                  onPressed: userDoc["paid"]
+                  onPressed: user.paid
                       ? null
                       : () {
                           _showConfirmUpgradeDialog(
-                              context, userDoc.documentID);
+                              context, user.id);
                         },
                 ),
               ),

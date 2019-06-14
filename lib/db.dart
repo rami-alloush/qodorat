@@ -74,6 +74,10 @@ class DatabaseService {
         list.documents.map((doc) => Lesson.fromFirestore(doc)).toList());
   }
 
+  Future<void> deleteLesson(lesson) {
+    return _db.collection('lessons').document(lesson.id).delete();
+  }
+
   // Scores
   Stream<Score> streamScore(String examID, FirebaseUser user) {
     var ref = _db

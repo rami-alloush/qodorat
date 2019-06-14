@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:qodorat/pages/admin_user_details_page.dart';
+import 'package:qodorat/models.dart';
 
 class UsersListPage extends StatelessWidget {
   @override
@@ -34,7 +35,9 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SizeTransition(
+    User user = User.fromFirestore(document);
+
+    return SizeTransition(
       sizeFactor:
           CurvedAnimation(parent: animation, curve: Curves.linearToEaseOut),
       axisAlignment: -10.0,
@@ -43,9 +46,9 @@ class UserItem extends StatelessWidget {
           child: Icon(Icons.sentiment_satisfied),
           backgroundColor: Colors.white,
         ),
-        title: Text(document['email']),
-        subtitle: Text(document['phone']),
-        trailing: document['paid']
+        title: Text(user.email),
+        subtitle: Text(user.phone),
+        trailing: user.paid
             ? Icon(
                 Icons.done_all,
                 color: Colors.green,
@@ -57,7 +60,7 @@ class UserItem extends StatelessWidget {
         onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => UserDetails(userDoc: document),
+                builder: (context) => UserDetails(user: user),
               ),
             ),
       ),
