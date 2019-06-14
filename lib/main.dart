@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:qodorat/pages/login_signup_page.dart';
-import 'package:qodorat/pages/admin_home_page.dart';
-import 'package:qodorat/pages/paid_home_page.dart';
-import 'package:qodorat/pages/guest_home_page.dart';
+import 'package:qodorat/pages/admin/admin_home_page.dart';
+import 'package:qodorat/pages/paid/paid_home_page.dart';
+import 'package:qodorat/pages/guest/guest_home_page.dart';
 import 'package:qodorat/db.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();

@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/db.dart';
 import 'package:qodorat/models.dart';
-import 'package:qodorat/pages/lesson_page.dart';
-import 'package:qodorat/pages/exam_page.dart';
+import 'package:qodorat/pages/paid/lesson_page.dart';
+import 'package:qodorat/pages/paid/exam_page.dart';
 
 class SectionPage extends StatefulWidget {
   SectionPage({

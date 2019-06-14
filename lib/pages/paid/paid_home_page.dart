@@ -1,48 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/upgrade_benefits.dart';
+import 'package:qodorat/pages/paid/paid_lessons.dart';
 import 'package:qodorat/pages/chat_start_page.dart';
-import 'package:qodorat/pages/terms_and_conditions_page.dart';
 
-class GuestHomePage extends StatefulWidget {
+class PaidHomePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => GuestHomePageState();
+  State<StatefulWidget> createState() => PaidHomePageState();
 }
 
-class GuestHomePageState extends State<GuestHomePage>
+class PaidHomePageState extends State<PaidHomePage>
     with TickerProviderStateMixin {
   List<AppPage> _items;
   int _currentIndex = 0;
   var _mainColor;
+  var _mainTitle;
 
   @override
   void initState() {
     super.initState();
-
     _items = [
       new AppPage(
-          icon: new Icon(Icons.stars),
-          title: 'مزايا الإشتراك',
-          color: Colors.lightGreen,
-          body: UpgradeBenefitsPage(),
-          vsync: this),
-      new AppPage(
-          icon: new Icon(Icons.import_contacts),
-          title: 'الشروط والأحكام',
-          color: Colors.lightGreen,
-          body: TAndRPage(),
+          icon: new Icon(Icons.content_paste),
+          title: 'الدروس',
+          color: Colors.lightGreen, //deepOrange.shade600,
+          body: PaidLessonsPage(), //PlaceholderPage(title: 'الدروس'),
           vsync: this),
       new AppPage(
         icon: new Icon(Icons.chat),
         title: 'المحادثة',
-        color: Colors.lightGreen,
+        color: Colors.green, //deepPurple,
         body: StartChatPage(),
         vsync: this,
       ),
       new AppPage(
         icon: new Icon(Icons.info_outline),
         title: 'معلومات',
-        color: Colors.lightGreen,
+        color: Colors.lightGreen, //blueAccent.shade700,
         body: Center(
             child: RaisedButton(
                 child: Text('تسجيل الخروج'),
@@ -51,7 +44,8 @@ class GuestHomePageState extends State<GuestHomePage>
       ),
     ];
 
-    for (AppPage view in _items) view.controller.addListener(this._rebuild);
+    for (AppPage view in _items)
+      view.controller.addListener(this._rebuild);
 
     _items[_currentIndex].controller.value = 1.0;
   }
@@ -94,13 +88,14 @@ class GuestHomePageState extends State<GuestHomePage>
           _currentIndex = int;
           _items[_currentIndex].controller.forward();
           _mainColor = _items[_currentIndex]._color;
+          _mainTitle = _items[_currentIndex]._title;
         });
       },
     );
 
     return new Scaffold(
 //      appBar: AppBar(
-//        title: Text("لوحة الضيف"),
+//        title: Text(_mainTitle ?? "لوحة الدارس"),
 //        backgroundColor: _mainColor,
 //      ),
       body: new Center(
@@ -139,7 +134,7 @@ class AppPage {
           backgroundColor: color,
         ) {
     _animation =
-        new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    new CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
   }
 
   FadeTransition buildTransition(BuildContext context) {

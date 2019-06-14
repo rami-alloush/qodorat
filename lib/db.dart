@@ -63,6 +63,10 @@ class DatabaseService {
   }
 
   /// Lessons
+  Future<DocumentReference> createLesson(lesson) {
+    return _db.collection('lessons').add(lesson.toJSON());
+  }
+
   Stream<List<Lesson>> streamLessons(int sectionCategory, int sectionIndex) {
     var ref = _db
         .collection('lessons')

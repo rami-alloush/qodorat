@@ -45,6 +45,8 @@ dependencies:
   path_drawing: ^0.2.4
   flutter_svg: ^0.5.1
 
+  validators: ^2.0.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

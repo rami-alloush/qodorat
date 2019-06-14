@@ -26,7 +26,6 @@ class User {
       phone: data['phone'] ?? 'لا يوجد رقم جوال',
     );
   }
-
 }
 
 class ChatThread {
@@ -47,8 +46,8 @@ class Lesson {
   final String id;
   final String title;
   final String videoURL;
-  final String exploratoryTest1;
-  final String exploratoryTest2;
+  final String exploratoryText1;
+  final String exploratoryText2;
   final int sectionCategory;
   final int sectionIndex;
   final int order;
@@ -57,8 +56,8 @@ class Lesson {
     this.id,
     this.title,
     this.videoURL,
-    this.exploratoryTest1,
-    this.exploratoryTest2,
+    this.exploratoryText1,
+    this.exploratoryText2,
     this.sectionCategory,
     this.sectionIndex,
     this.order,
@@ -71,14 +70,24 @@ class Lesson {
       id: doc.documentID,
       title: data['title'] ?? 'لا يوجد عنوان لهذا الدرس',
       videoURL:
-          data['videoURL'] ?? 'https://www.youtube.com/watch?v=8VK39xCrhhg',
-      exploratoryTest1: data['exploratoryTest1'] ?? 'لا يوجد شرح اساسي',
-      exploratoryTest2: data['exploratoryTest2'] ?? 'لا يوجد شرح إضافي',
+          data['videoURL'] ?? '8VK39xCrhhg',
+      exploratoryText1: data['exploratoryText1'] ?? 'لا يوجد شرح اساسي',
+      exploratoryText2: data['exploratoryText2'] ?? 'لا يوجد شرح إضافي',
       sectionCategory: data['sectionIndex'] ?? 0,
       sectionIndex: data['sectionIndex'] ?? 0,
       order: data['order'] ?? 0,
     );
   }
+
+  Map<String, dynamic> toJSON() => {
+        'title': title,
+        'videoURL': videoURL,
+        'exploratoryText1': exploratoryText1,
+        'exploratoryText2': exploratoryText2,
+        'sectionCategory': sectionCategory,
+        'sectionIndex': sectionIndex,
+        'order': order,
+      };
 }
 
 class Question {

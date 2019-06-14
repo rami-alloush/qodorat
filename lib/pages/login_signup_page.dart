@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:qodorat/pages/intro_page.dart';
 import 'package:qodorat/db.dart';
 
-final analytics = new FirebaseAnalytics();
+final analytics = FirebaseAnalytics();
 enum FormMode { LOGIN, SIGNUP }
 
 class LoginSignUpPage extends StatefulWidget {
@@ -14,12 +14,12 @@ class LoginSignUpPage extends StatefulWidget {
   final db = DatabaseService();
 
   @override
-  State<StatefulWidget> createState() => new _LoginSignUpPageState();
+  State<StatefulWidget> createState() => _LoginSignUpPageState();
 }
 
 class _LoginSignUpPageState extends State<LoginSignUpPage> {
-  final _loginFormKey = new GlobalKey<FormState>();
-  final _signupFormKey = new GlobalKey<FormState>();
+  final _loginFormKey = GlobalKey<FormState>();
+  final _signupFormKey = GlobalKey<FormState>();
 
   String _email;
   String _password;
@@ -39,7 +39,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   void initState() {
     _errorMessage = "";
     _isLoading = false;
-    new Timer(new Duration(milliseconds: 100), () {
+    Timer(Duration(milliseconds: 100), () {
       checkFirstSeen();
     });
     super.initState();
@@ -60,9 +60,9 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   @override
   Widget build(BuildContext context) {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('طور قدراتك'),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('طور قدراتك'),
         ),
         backgroundColor: Colors.white,
         body: Container(
@@ -84,11 +84,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   Widget _showLoginBody(BuildContext context) {
-    return new Container(
+    return Container(
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _loginFormKey,
-          child: new ListView(
+          child: ListView(
             shrinkWrap: true,
             children: <Widget>[
               _showLogo(),
@@ -103,11 +103,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   Widget _showSignUpBody(BuildContext context) {
-    return new Container(
+    return Container(
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _signupFormKey,
-          child: new ListView(
+          child: ListView(
             shrinkWrap: true,
             children: <Widget>[
               _showLogo(),
@@ -123,7 +123,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   Widget _showLogo() {
-    return new Hero(
+    return Hero(
       tag: 'logo',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
@@ -160,7 +160,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   Widget _showPasswordInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-      child: new TextFormField(
+      child: TextFormField(
 //        initialValue: "123456",
         maxLines: 1,
         obscureText: true,
@@ -169,9 +169,9 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
         autofocus: false,
         onFieldSubmitted: (term) =>
             FocusScope.of(context).requestFocus(_phoneFocus),
-        decoration: new InputDecoration(
+        decoration: InputDecoration(
             hintText: 'كلمة المرور',
-            icon: new Icon(
+            icon: Icon(
               Icons.lock,
               color: Colors.grey,
             )),
@@ -204,32 +204,32 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   Widget _showPrimaryButton() {
-    return new Padding(
+    return Padding(
         padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
         child: SizedBox(
           height: 40.0,
-          child: new RaisedButton(
+          child: RaisedButton(
             elevation: 5.0,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
             child: _formMode == FormMode.LOGIN
-                ? new Text('تسجيل الدخول',
-                    style: new TextStyle(fontSize: 20.0, color: Colors.white))
-                : new Text('إنشاء حساب',
-                    style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                ? Text('تسجيل الدخول',
+                    style: TextStyle(fontSize: 20.0, color: Colors.white))
+                : Text('إنشاء حساب',
+                    style: TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
         ));
   }
 
   Widget _showSecondaryButton() {
-    return new FlatButton(
+    return FlatButton(
       child: _formMode == FormMode.LOGIN
-          ? new Text('إنشاء حساب جديد',
-              style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300))
-          : new Text('لديك حساب؟ سجل الدخول',
+          ? Text('إنشاء حساب جديد',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300))
+          : Text('لديك حساب؟ سجل الدخول',
               style:
-                  new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+                  TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
       onPressed: _formMode == FormMode.LOGIN
           ? _changeFormToSignUp
           : _changeFormToLogin,
@@ -352,12 +352,12 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("تأكيد البريد الإلكتروني"),
-          content: new Text(
+          title: Text("تأكيد البريد الإلكتروني"),
+          content: Text(
               "تم إرسال رابط تأكيد البريد الإلكتروني. برجاء تأكيد البريد الإلكتروني حتى تتمكن من استخدام البرنامج."),
           actions: <Widget>[
-            new RaisedButton(
-              child: new Text(
+            RaisedButton(
+              child: Text(
                 "إعادة إرسال",
                 style: TextStyle(color: Colors.white),
               ),
@@ -367,8 +367,8 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                 widget.auth.signOut();
               },
             ),
-            new FlatButton(
-              child: new Text("موافق"),
+            FlatButton(
+              child: Text("موافق"),
               onPressed: () {
                 if (_signupFormKey.currentState != null) {
                   _changeFormToLogin();

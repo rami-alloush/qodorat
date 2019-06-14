@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/db.dart';
-import 'package:qodorat/models.dart';
-import 'package:qodorat/pages/lesson_page.dart';
-import 'package:qodorat/pages/exam_page.dart';
+import 'package:qodorat/pages/paid/lesson_page.dart';
+import 'package:qodorat/pages/admin/admin_add_lesson_page.dart';
 
-class AdminSectionPage extends StatefulWidget {
+class AdminSectionPage extends StatelessWidget {
   AdminSectionPage({
     @required this.sectionCategory,
     @required this.sectionIndex,
@@ -17,35 +14,34 @@ class AdminSectionPage extends StatefulWidget {
   final sectionIndex;
   final sectionTitle;
   final db = DatabaseService();
+  var lessonCount;
 
-  @override
-  _AdminSectionPageState createState() => _AdminSectionPageState();
-}
-
-class _AdminSectionPageState extends State<AdminSectionPage> {
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<FirebaseUser>(context);
-    var examID = "pre_${widget.sectionCategory}_${widget.sectionIndex}";
-
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('${widget.sectionTitle}'),
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.content_paste)),
-              Tab(icon: Icon(Icons.question_answer)),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            _buildLessonsList(),
-            Icon(Icons.directions_bike),
-          ],
-        ),
+      child: Builder(
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('$sectionTitle'),
+              bottom: TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.content_paste)),
+                  Tab(icon: Icon(Icons.question_answer)),
+                ],
+              ),
+              actions: <Widget>[],
+            ),
+            body: TabBarView(
+              children: [
+                _buildLessonsList(),
+                Icon(Icons.directions_bike),
+              ],
+            ),
+            floatingActionButton: _addFAB(context),
+          );
+        },
       ),
     );
   }
@@ -53,9 +49,9 @@ class _AdminSectionPageState extends State<AdminSectionPage> {
   _buildLessonsList() {
     final db = DatabaseService();
     return StreamBuilder(
-        stream: widget.db
-            .streamLessons(widget.sectionCategory, widget.sectionIndex),
+        stream: db.streamLessons(sectionCategory, sectionIndex),
         builder: (context, snapshot) {
+          snapshot.data != null ? lessonCount = snapshot.data.length : lessonCount = 0;
           return Container(
             child: snapshot == null ||
                     !snapshot.hasData ||
@@ -82,7 +78,6 @@ class _AdminSectionPageState extends State<AdminSectionPage> {
                             // Then show a snackbar.
                             Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text("تم حذف: ${lesson.title}")));
-//                            print("Deleted!");
                           }
                         },
                         child: Card(
@@ -135,5 +130,29 @@ class _AdminSectionPageState extends State<AdminSectionPage> {
         );
       },
     );
+  }
+
+  Widget _addFAB(context) {
+    return FloatingActionButton(
+        shape: StadiumBorder(),
+//        backgroundColor: Colors.redAccent,
+        child: Icon(
+          Icons.add_circle,
+          size: 20.0,
+        ),
+        onPressed: () {
+          DefaultTabController.of(context).index == 0
+              ? Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddLesson(
+                          sectionCategory: sectionCategory,
+                          sectionIndex: sectionIndex,
+                          lessonCount: lessonCount,
+                        ),
+                  ),
+                )
+              : print(lessonCount);
+        });
   }
 }

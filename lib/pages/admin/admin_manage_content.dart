@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
-import 'admin_section_page.dart';
+import 'package:qodorat/pages/admin/admin_section_page.dart';
 
 class ManageContent extends StatefulWidget {
   @override

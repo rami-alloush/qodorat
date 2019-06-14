@@ -156,9 +156,9 @@ class _LessonPageState extends State<LessonPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: <Widget>[
-                              Text("${widget.lesson.exploratoryTest1}"),
+                              Text("${widget.lesson.exploratoryText1}"),
                               Divider(),
-                              Text("${widget.lesson.exploratoryTest2}"),
+                              Text("${widget.lesson.exploratoryText2}"),
                             ],
                           ),
                         ),

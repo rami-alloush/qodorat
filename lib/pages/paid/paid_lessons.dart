@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'backdrop.dart';
+import 'package:qodorat/pages/paid/backdrop.dart';
 import 'package:qodorat/bloc/scroll_bloc.dart';
-import 'package:qodorat/pages/section_page.dart';
+import 'package:qodorat/pages/paid/section_page.dart';
 
 class PaidLessonsPage extends StatefulWidget {
   @override
