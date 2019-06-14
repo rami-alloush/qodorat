@@ -111,4 +111,13 @@ class DatabaseService {
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Question.fromFirestore(doc)).toList());
   }
+
+  Future<void> deleteQuestion(examID, question) {
+    return _db
+        .collection('exams')
+        .document(examID)
+        .collection("questions")
+        .document(question.id)
+        .delete();
+  }
 }

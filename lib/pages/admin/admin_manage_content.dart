@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:qodorat/pages/admin/admin_section_page.dart';
+import 'admin_questions_page.dart';
 
 class ManageContent extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _ManageContentState extends State<ManageContent> {
 
   @override
   Widget build(BuildContext context) {
+
     _mySectionsCard(catNum, catList) {
       return Card(
         elevation: 4.0,

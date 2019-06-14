@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qodorat/db.dart';
 import 'package:qodorat/pages/paid/lesson_page.dart';
 import 'package:qodorat/pages/admin/admin_add_lesson_page.dart';
+import 'admin_questions_page.dart';
 
 class AdminSectionPage extends StatelessWidget {
   AdminSectionPage({
@@ -18,8 +19,9 @@ class AdminSectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Builder(
         builder: (BuildContext context) {
           return Scaffold(
@@ -29,6 +31,7 @@ class AdminSectionPage extends StatelessWidget {
                 tabs: [
                   Tab(icon: Icon(Icons.content_paste)),
                   Tab(icon: Icon(Icons.question_answer)),
+                  Tab(icon: Icon(Icons.grade)),
                 ],
               ),
               actions: <Widget>[],
@@ -36,7 +39,8 @@ class AdminSectionPage extends StatelessWidget {
             body: TabBarView(
               children: [
                 _buildLessonsList(),
-                Icon(Icons.directions_bike),
+                QuestionsPage(examID: "pre_${sectionCategory}_$sectionIndex"),
+                QuestionsPage(examID: "post_${sectionCategory}_$sectionIndex"),
               ],
             ),
             floatingActionButton: _addFAB(context),
