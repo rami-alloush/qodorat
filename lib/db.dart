@@ -112,6 +112,14 @@ class DatabaseService {
         list.documents.map((doc) => Question.fromFirestore(doc)).toList());
   }
 
+  Future<DocumentReference> createQuestion(examID, question) {
+    return _db
+        .collection('exams')
+        .document(examID)
+        .collection("questions")
+        .add(question.toJSON());
+  }
+
   Future<void> deleteQuestion(examID, question) {
     return _db
         .collection('exams')

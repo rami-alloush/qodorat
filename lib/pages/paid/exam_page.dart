@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qodorat/db.dart';
-import 'package:qodorat/models.dart';
 
 var questionNumber = 0;
 var finalScore = 0;
@@ -50,115 +49,123 @@ class _ExamPageState extends State<ExamPage> {
 
   _showQuestions(data) {
     questions = data;
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerRight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "سؤال رقم: ${questionNumber + 1} من ${questions.length}",
-                  style: TextStyle(fontSize: 22.0),
-                ),
-                Text(
-                  "النتيجة: $finalScore",
-                  style: TextStyle(fontSize: 22.0),
-                )
-              ],
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        alignment: Alignment.topCenter,
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "سؤال رقم: ${questionNumber + 1} من ${questions.length}",
+                    style: TextStyle(fontSize: 22.0),
+                  ),
+                  Text(
+                    "النتيجة: $finalScore",
+                    style: TextStyle(fontSize: 22.0),
+                  )
+                ],
+              ),
             ),
-          ),
-          Divider(),
-          Text(
-            questions[questionNumber].question,
-            style: TextStyle(
-              fontSize: 20.0,
+            Divider(),
+            Text(
+              questions[questionNumber].question,
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
             ),
-          ),
-          Padding(padding: EdgeInsets.all(10.0)),
-          //button 1
-          MaterialButton(
-            minWidth: 200.0,
-            color: Colors.blueGrey,
-            onPressed: () {
-              if (questions[questionNumber].choices[0] ==
-                  questions[questionNumber].correctAnswer) {
-                debugPrint("Correct");
-                finalScore++;
-              } else {
-                debugPrint("Wrong");
-              }
-              updateQuestion();
-            },
-            child: Text(
-              questions[questionNumber].choices[0],
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
+            Padding(padding: EdgeInsets.all(8.0)),
+            //button 1
+            MaterialButton(
+              minWidth: 200.0,
+              color: Colors.blueGrey,
+              onPressed: () {
+                if (questions[questionNumber].choices[0] ==
+                    questions[questionNumber].correctAnswer) {
+                  debugPrint("Correct");
+                  finalScore++;
+                } else {
+                  debugPrint("Wrong");
+                }
+                updateQuestion();
+              },
+              child: Text(
+                questions[questionNumber].choices[0],
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
             ),
-          ),
 
-          //button 2
-          MaterialButton(
-            minWidth: 200.0,
-            color: Colors.blueGrey,
-            onPressed: () {
-              if (questions[questionNumber].choices[1] ==
-                  questions[questionNumber].correctAnswer) {
-                debugPrint("Correct");
-                finalScore++;
-              } else {
-                debugPrint("Wrong");
-              }
-              updateQuestion();
-            },
-            child: Text(
-              questions[questionNumber].choices[1],
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
-            ),
-          ),
+            Padding(padding: EdgeInsets.all(8.0)),
 
-          //button 3
-          MaterialButton(
-            minWidth: 200.0,
-            color: Colors.blueGrey,
-            onPressed: () {
-              if (questions[questionNumber].choices[2] ==
-                  questions[questionNumber].correctAnswer) {
-                debugPrint("Correct");
-                finalScore++;
-              } else {
-                debugPrint("Wrong");
-              }
-              updateQuestion();
-            },
-            child: Text(
-              questions[questionNumber].choices[2],
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
+            //button 2
+            MaterialButton(
+              minWidth: 200.0,
+              color: Colors.blueGrey,
+              onPressed: () {
+                if (questions[questionNumber].choices[1] ==
+                    questions[questionNumber].correctAnswer) {
+                  debugPrint("Correct");
+                  finalScore++;
+                } else {
+                  debugPrint("Wrong");
+                }
+                updateQuestion();
+              },
+              child: Text(
+                questions[questionNumber].choices[1],
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
             ),
-          ),
 
-          //button 4
-          MaterialButton(
-            minWidth: 200.0,
-            color: Colors.blueGrey,
-            onPressed: () {
-              if (questions[questionNumber].choices[3] ==
-                  questions[questionNumber].correctAnswer) {
-                debugPrint("Correct");
-                finalScore++;
-              } else {
-                debugPrint("Wrong");
-              }
-              updateQuestion();
-            },
-            child: Text(
-              questions[questionNumber].choices[3],
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
+            Padding(padding: EdgeInsets.all(8.0)),
+
+            //button 3
+            MaterialButton(
+              minWidth: 200.0,
+              color: Colors.blueGrey,
+              onPressed: () {
+                if (questions[questionNumber].choices[2] ==
+                    questions[questionNumber].correctAnswer) {
+                  debugPrint("Correct");
+                  finalScore++;
+                } else {
+                  debugPrint("Wrong");
+                }
+                updateQuestion();
+              },
+              child: Text(
+                questions[questionNumber].choices[2],
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
             ),
-          ),
-        ],
+
+            Padding(padding: EdgeInsets.all(8.0)),
+            
+            //button 4
+            MaterialButton(
+              minWidth: 200.0,
+              color: Colors.blueGrey,
+              onPressed: () {
+                if (questions[questionNumber].choices[3] ==
+                    questions[questionNumber].correctAnswer) {
+                  debugPrint("Correct");
+                  finalScore++;
+                } else {
+                  debugPrint("Wrong");
+                }
+                updateQuestion();
+              },
+              child: Text(
+                questions[questionNumber].choices[3],
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

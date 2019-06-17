@@ -41,17 +41,24 @@ class _SectionPageState extends State<SectionPage> {
               return StreamProvider<List<Lesson>>.value(
                 stream: db.streamLessons(
                     widget.sectionCategory, widget.sectionIndex),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("درجة الإختبار القبلي: ${snapshot.data.score}%"),
-                    ),
-                    Expanded(
-                      child: LessonsList(),
-                    ),
-                  ],
-                ),
+                // Only show score for Trainings (no lessons)
+                child: widget.sectionCategory == 3
+                    ? Center(
+                        child: Text(
+                            "تم إكمال هذا التدريب بدرجة: ${snapshot.data.score}%"),
+                      )
+                    : Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                "درجة الإختبار القبلي: ${snapshot.data.score}%"),
+                          ),
+                          Expanded(
+                            child: LessonsList(),
+                          ),
+                        ],
+                      ),
               );
             } else {
               // No Score
@@ -63,7 +70,10 @@ class _SectionPageState extends State<SectionPage> {
                   RaisedButton(
                       onPressed: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ExamPage(examID: examID,)),
+                            MaterialPageRoute(
+                                builder: (context) => ExamPage(
+                                      examID: examID,
+                                    )),
                           ),
                       child: Text("بدء الأختبار")),
                 ],

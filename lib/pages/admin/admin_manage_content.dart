@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:qodorat/pages/admin/admin_section_page.dart';
 import 'admin_questions_page.dart';
 
+/// Main admin content page that displays
+/// the main 3 cards for content
 class ManageContent extends StatefulWidget {
   @override
   State createState() => _ManageContentState();
@@ -17,7 +19,6 @@ class _ManageContentState extends State<ManageContent> {
 
   @override
   Widget build(BuildContext context) {
-
     _mySectionsCard(catNum, catList) {
       return Card(
         elevation: 4.0,
@@ -39,11 +40,20 @@ class _ManageContentState extends State<ManageContent> {
                   onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AdminSectionPage(
-                                sectionCategory: catNum,
-                                sectionIndex: index,
-                                sectionTitle: catList[index],
-                              ),
+                          // Control training page behavior
+                          builder: (context) => catNum == 3
+                              ? Scaffold(
+                                  appBar: AppBar(
+                                    title: Text('تدريب ${index + 1}'),
+                                  ),
+                                  body: QuestionsPage(
+                                      examID: "pre_${catNum}_$index"),
+                                )
+                              : AdminSectionPage(
+                                  sectionCategory: catNum,
+                                  sectionIndex: index,
+                                  sectionTitle: catList[index],
+                                ),
                         ),
                       ),
                 ),
@@ -61,9 +71,18 @@ class _ManageContentState extends State<ManageContent> {
         "استيعات المقروء",
         "الخطأ السياقي"
       ]),
-      _mySectionsCard(
-        3, ["تدريب 1", "تدريب 2", "تدريب 3" ]
-      ),
+      _mySectionsCard(3, [
+        "تدريب 1",
+        "تدريب 2",
+        "تدريب 3",
+        "تدريب 4",
+        "تدريب 5",
+        "تدريب 6",
+        "تدريب 7",
+        "تدريب 8",
+        "تدريب 9",
+        "تدريب 10"
+      ]),
     ];
 
     return Scaffold(

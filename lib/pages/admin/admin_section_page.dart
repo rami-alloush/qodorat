@@ -4,6 +4,7 @@ import 'package:qodorat/pages/paid/lesson_page.dart';
 import 'package:qodorat/pages/admin/admin_add_lesson_page.dart';
 import 'admin_questions_page.dart';
 
+// Displays the main section page with 3 PageViews
 class AdminSectionPage extends StatelessWidget {
   AdminSectionPage({
     @required this.sectionCategory,
@@ -19,7 +20,6 @@ class AdminSectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 3,
       child: Builder(
@@ -38,70 +38,76 @@ class AdminSectionPage extends StatelessWidget {
             ),
             body: TabBarView(
               children: [
-                _buildLessonsList(),
+                _buildLessonsList(context),
                 QuestionsPage(examID: "pre_${sectionCategory}_$sectionIndex"),
                 QuestionsPage(examID: "post_${sectionCategory}_$sectionIndex"),
               ],
             ),
-            floatingActionButton: _addFAB(context),
           );
         },
       ),
     );
   }
 
-  _buildLessonsList() {
+  _buildLessonsList(context) {
     final db = DatabaseService();
-    return StreamBuilder(
-        stream: db.streamLessons(sectionCategory, sectionIndex),
-        builder: (context, snapshot) {
-          snapshot.data != null ? lessonCount = snapshot.data.length : lessonCount = 0;
-          return Container(
-            child: snapshot == null ||
-                    !snapshot.hasData ||
-                    snapshot.data.length == 0
-                ? Center(child: Text("لا يوجد دروس"))
-                : ListView(
-                    children: snapshot.data.map<Widget>((lesson) {
-                      return Dismissible(
-                        key: Key(lesson.id),
-                        background: Container(
-                          color: Colors.red,
-                          alignment: Alignment(0.9, 0.0),
-                          child: Icon(
-                            Icons.delete_forever,
-                            color: Colors.white,
-                          ),
-                        ),
-                        direction: DismissDirection.startToEnd,
-                        confirmDismiss: (DismissDirection direction) async {
-                          // Show confirmation
-                          if (await _showConfirmDeleteDialog(context, lesson)) {
-                            // Remove the item from the data source.
-                            db.deleteLesson(lesson);
-                            // Then show a snackbar.
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text("تم حذف: ${lesson.title}")));
-                          }
-                        },
-                        child: Card(
-                          child: ListTile(
-                            leading: Text(
-                              lesson.order.toString(),
+    return Scaffold(
+      floatingActionButton: _addFAB(context),
+      body: StreamBuilder(
+          stream: db.streamLessons(sectionCategory, sectionIndex),
+          builder: (context, snapshot) {
+            snapshot.data != null
+                ? lessonCount = snapshot.data.length
+                : lessonCount = 0;
+            return Container(
+              child: snapshot == null ||
+                      !snapshot.hasData ||
+                      snapshot.data.length == 0
+                  ? Center(child: Text("لا يوجد دروس"))
+                  : ListView(
+                      children: snapshot.data.map<Widget>((lesson) {
+                        return Dismissible(
+                          key: Key(lesson.id),
+                          background: Container(
+                            color: Colors.red,
+                            alignment: Alignment(0.9, 0.0),
+                            child: Icon(
+                              Icons.delete_forever,
+                              color: Colors.white,
                             ),
-                            title: Text(lesson.title),
-                            onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LessonPage(lesson)),
-                                ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-          );
-        });
+                          direction: DismissDirection.startToEnd,
+                          confirmDismiss: (DismissDirection direction) async {
+                            // Show confirmation
+                            if (await _showConfirmDeleteDialog(
+                                context, lesson)) {
+                              // Remove the item from the data source.
+                              db.deleteLesson(lesson);
+                              // Then show a snackbar.
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text("تم حذف: ${lesson.title}")));
+                            }
+                          },
+                          child: Card(
+                            child: ListTile(
+                              leading: Text(
+                                lesson.order.toString(),
+                              ),
+                              title: Text(lesson.title),
+                              onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LessonPage(lesson)),
+                                  ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+            );
+          }),
+    );
   }
 
   Future<bool> _showConfirmDeleteDialog(BuildContext context, lesson) {
@@ -138,25 +144,24 @@ class AdminSectionPage extends StatelessWidget {
 
   Widget _addFAB(context) {
     return FloatingActionButton(
-        shape: StadiumBorder(),
+      shape: StadiumBorder(),
 //        backgroundColor: Colors.redAccent,
-        child: Icon(
-          Icons.add_circle,
-          size: 20.0,
-        ),
-        onPressed: () {
-          DefaultTabController.of(context).index == 0
-              ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddLesson(
-                          sectionCategory: sectionCategory,
-                          sectionIndex: sectionIndex,
-                          lessonCount: lessonCount,
-                        ),
-                  ),
-                )
-              : print(lessonCount);
-        });
+      child: Icon(
+        Icons.add_circle,
+        size: 20.0,
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddLesson(
+                  sectionCategory: sectionCategory,
+                  sectionIndex: sectionIndex,
+                  lessonCount: lessonCount,
+                ),
+          ),
+        );
+      },
+    );
   }
 }

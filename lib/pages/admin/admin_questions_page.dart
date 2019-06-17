@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qodorat/db.dart';
+import 'admin_add_question_page.dart';
 
+// Pages for Question display and add btn
+// Shown inside the PageView of sections
+// and directly in Training pages
 class QuestionsPage extends StatelessWidget {
   QuestionsPage({@required this.examID});
 
@@ -9,56 +13,82 @@ class QuestionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = DatabaseService();
-    return StreamBuilder(
-      stream: db.streamQuestions(examID),
-      builder: (context, snapshot) {
-        return Container(
-          child: snapshot == null ||
-                  !snapshot.hasData ||
-                  snapshot.data.length == 0
-              ? Center(child: Text("لا يوجد اسئلة"))
-              : ListView(
-                  children: snapshot.data.map<Widget>((question) {
-                    return Dismissible(
-                      key: Key(question.id),
-                      background: Container(
-                        color: Colors.red,
-                        alignment: Alignment(0.9, 0.0),
-                        child: Icon(
-                          Icons.delete_forever,
-                          color: Colors.white,
-                        ),
-                      ),
-                      direction: DismissDirection.startToEnd,
-                      confirmDismiss: (DismissDirection direction) async {
-                        // Show confirmation
-                        if (await _showConfirmDeleteDialog(context, question)) {
-                          // Remove the item from the data source.
-                          db.deleteQuestion(examID, question);
-                          // Then show a snackbar.
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text("تم حذف السؤال: ${question.question}")));
-                        }
-                      },
-                      child: Card(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Text("السؤال: ${question.question}"),
-                                Text("الإختيارات: ${question.choices}"),
-                                Text("الإجابة الصحيحة: ${question.correctAnswer}"),
-                              ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        shape: StadiumBorder(),
+        child: Icon(
+          Icons.add_circle,
+          size: 20.0,
+        ),
+        onPressed: () =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    AddQuestion(
+                      examID: examID,
+                    ),
+              ),
+            ),
+      ),
+      body: StreamBuilder(
+        stream: db.streamQuestions(examID),
+        builder: (context, snapshot) {
+          return Container(
+            child: snapshot == null ||
+                !snapshot.hasData ||
+                snapshot.data.length == 0
+                ? Center(child: Text("لا يوجد اسئلة"))
+                : ListView(
+              children: snapshot.data.map<Widget>((question) {
+                return Dismissible(
+                  key: Key(question.id),
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment(0.9, 0.0),
+                    child: Icon(
+                      Icons.delete_forever,
+                      color: Colors.white,
+                    ),
+                  ),
+                  direction: DismissDirection.startToEnd,
+                  confirmDismiss: (DismissDirection direction) async {
+                    // Show confirmation
+                    if (await _showConfirmDeleteDialog(context, question)) {
+                      // Remove the item from the data source.
+                      db.deleteQuestion(examID, question);
+                      // Then show a snackbar.
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "تم حذف السؤال: ${question.question}")));
+                    }
+                  },
+                  child: Card(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Text("السؤال: ${question.question}"),
+                                  Text("الإختيارات: ${question.choices}"),
+                                  Text(
+                                      "الإجابة الصحيحة: ${question.correctAnswer}"),
+                                ],
+                              ),
                             ),
-                          ],
-                        )
-                      ),
-                    );
-                  }).toList(),
-                ),
-        );
-      },
+                          ),
+                        ],
+                      )
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        },
+      ),
     );
   }
 

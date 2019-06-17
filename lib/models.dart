@@ -114,6 +114,12 @@ class Question {
     );
   }
 
+  Map<String, dynamic> toJSON() => {
+    'question': question,
+    'choices': choices,
+    'correctAnswer': correctAnswer,
+  };
+
   @override
   String toString() {
     return "السؤال: ${this.question}";
