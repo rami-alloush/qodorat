@@ -92,22 +92,34 @@ class LessonsList extends StatelessWidget {
     return Container(
       child: lessons == null || lessons.isEmpty
           ? Center(child: Text("لا يوجد دروس"))
-          : ListView(
-              children: lessons.map((lesson) {
-                return Card(
-                  child: ListTile(
-                    leading: Text(
-                      lesson.order.toString(),
-                    ),
-                    title: Text(lesson.title),
-                    onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LessonPage(lesson)),
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListView(
+                  shrinkWrap: true,
+                  children: lessons.map(
+                    (lesson) {
+                      return Card(
+                        child: ListTile(
+                          leading: Text(
+                            lesson.order.toString(),
+                          ),
+                          title: Text(lesson.title),
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LessonPage(lesson)),
+                              ),
                         ),
-                  ),
-                );
-              }).toList(),
+                      );
+                    },
+                  ).toList(),
+                ),
+                RaisedButton(
+                  child: Text("إكمال الإختبار النهائي"),
+                  onPressed: null,
+                )
+              ],
             ),
     );
   }

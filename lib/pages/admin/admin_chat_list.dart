@@ -4,64 +4,83 @@ import 'package:firestore_ui/firestore_ui.dart';
 import 'package:qodorat/pages/chat_page.dart';
 
 class ChatListPage extends StatelessWidget {
+  final chatsStream = Firestore.instance
+      .collection('chats')
+      .orderBy("last_message", descending: true)
+      .snapshots();
+
   @override
   Widget build(BuildContext context) {
-    return FirestoreAnimatedList(
-      query: Firestore.instance.collection('chats').snapshots(),
-      padding: new EdgeInsets.all(8.0),
-      itemBuilder: (
-        BuildContext context,
-        DocumentSnapshot snapshot,
-        Animation<double> animation,
-        int index,
-      ) {
-        return FadeTransition(
-            opacity: animation,
-            child: ChatItem(
-              document: snapshot,
-              animation: animation,
-            ));
-      },
-    ); // end of FirestoreAnimatedList
+    return StreamBuilder(
+        stream: chatsStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Text('Loading data... Please wait');
+          return ListView(
+            children: snapshot.data.documents.map<Widget>(
+              (document) {
+                return ChatThread(
+                  document: document,
+                );
+              },
+            ).toList(),
+          );
+//          return FirestoreAnimatedList(
+//            query: chatsStream,
+//            padding: new EdgeInsets.all(8.0),
+//            itemBuilder: (BuildContext context,
+//                DocumentSnapshot snapshot,
+//                Animation<double> animation,
+//                int index,) {
+//              return FadeTransition(
+//                  opacity: animation,
+//                  child: ChatThread(
+//                    document: snapshot,
+//                    animation: animation,
+//                  ));
+//            },
+//          ); // end of FirestoreAnimatedList,
+        });
   }
 }
 
-class ChatItem extends StatelessWidget {
-  ChatItem({this.document, this.animation});
+class ChatThread extends StatelessWidget {
+  ChatThread({this.document});
 
   final DocumentSnapshot document;
-  final Animation animation;
+//  final Animation animation = Animation();
 
   @override
   Widget build(BuildContext context) {
-    return new SizeTransition(
-      sizeFactor:
-          CurvedAnimation(parent: animation, curve: Curves.linearToEaseOut),
-      axisAlignment: -10.0,
-      child: ListTile(
+//    return SizeTransition(
+//      sizeFactor:
+//          CurvedAnimation(curve: Curves.linearToEaseOut),
+//      axisAlignment: -10.0,
+//      child:
+      return ListTile(
         leading: CircleAvatar(
           child: Icon(Icons.sentiment_satisfied),
           backgroundColor: Colors.white,
         ),
         title: Text(document['email']),
-//        subtitle: Text(document['phone']),
-//        trailing: document['paid']
-//            ? Icon(
-//          Icons.done_all,
-//          color: Colors.green,
-//        )
-//            : Icon(
-//          Icons.do_not_disturb,
-//          color: Colors.red,
-//        ),
-        onTap: () => Navigator.push(
+        trailing: document['read']
+            ? null
+            : Icon(
+                Icons.star,
+                color: Colors.orange,
+              ),
+        onTap: () {
+          Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChatScreen(
-                      targetUID: document.documentID,
-                      userEmail: document['email'],
-                    ))),
-      ),
+              builder: (context) => ChatScreen(
+                    targetUID: document.documentID,
+                    userEmail: document['email'],
+                  ),
+            ),
+          );
+          db.readChatThread(chatDocID: document.documentID);
+        },
+//      ),
     );
   }
 }

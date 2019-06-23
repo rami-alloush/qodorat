@@ -19,8 +19,6 @@ class _LessonPageState extends State<LessonPage> {
 //  var _idController = TextEditingController();
 //  var _seekToController = TextEditingController();
 //  double _volume = 100;
-  String _playerStatus = "";
-  String _errorCode = '0';
 
 //  void listener() {
 //    if (_controller.value.playerState == PlayerState.ENDED) {
@@ -191,31 +189,6 @@ class _LessonPageState extends State<LessonPage> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showThankYouDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: Text("شكراً لك :)"),
-          content: Text("تم اكمال محتوى الدرس بنجاح"),
-          actions: <Widget>[
-            RaisedButton(
-              child: Text(
-                "موافق",
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

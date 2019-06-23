@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:webview_flutter/webview_flutter.dart';
+//import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -15,7 +14,7 @@ class HelpScreen extends StatefulWidget {
 
 class HelpScreenState extends State<HelpScreen> {
   WebViewController _controller;
-  InAppWebViewController webView;
+  // InAppWebViewController webView;
   String url = "";
   double progress = 0;
 

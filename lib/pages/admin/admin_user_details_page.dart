@@ -48,7 +48,9 @@ class UserDetails extends StatelessWidget {
                 child: RaisedButton(
                   child: Text("المحادثة"),
                   onPressed: () {
+                    // create new chat document
                     db.createChat(user.id, user.email);
+                    // Navigate to chat page
                     Navigator.push(
                         context,
                         MaterialPageRoute(

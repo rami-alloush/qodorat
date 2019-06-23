@@ -63,14 +63,14 @@ class _ManageContentState extends State<ManageContent> {
     }
 
     final List<Widget> _pages = <Widget>[
-      _mySectionsCard(1, ["هندسة", "جبر", "حساب", "تحليل بيانات"]),
+      _mySectionsCard(1, ["الحساب", "الجبر", "تحليل البيانات", "الهندسة"]),
       _mySectionsCard(2, [
         "التناظر اللفظي",
         "اكمال الجمل",
         "المفردة الشاذة",
-        "استيعات المقروء",
+        "استيعاب المقروء",
         "الخطأ السياقي"
-      ]),
+      ]), 
       _mySectionsCard(3, [
         "تدريب 1",
         "تدريب 2",

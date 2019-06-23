@@ -101,12 +101,12 @@ class MyBackLayerState extends State<MyBackLayer>
 
   Widget _buildPageSelector(
       BuildContext context, AnimationController controller) {
-    const List _Cat1Sections = ["هندسة", "جبر", "حساب", "تحليل بيانات"];
+    const List _Cat1Sections = ["الحساب", "الجبر", "تحليل البيانات", "الهندسة"];
     const List _Cat2Sections = [
       "التناظر اللفظي",
       "اكمال الجمل",
       "المفردة الشاذة",
-      "استيعات المقروء",
+      "استيعاب المقروء",
       "الخطأ السياقي"
     ];
 

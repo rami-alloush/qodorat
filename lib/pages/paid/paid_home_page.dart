@@ -12,8 +12,6 @@ class PaidHomePageState extends State<PaidHomePage>
     with TickerProviderStateMixin {
   List<AppPage> _items;
   int _currentIndex = 0;
-  var _mainColor;
-  var _mainTitle;
 
   @override
   void initState() {
@@ -87,8 +85,6 @@ class PaidHomePageState extends State<PaidHomePage>
           _items[_currentIndex].controller.reverse();
           _currentIndex = int;
           _items[_currentIndex].controller.forward();
-          _mainColor = _items[_currentIndex]._color;
-          _mainTitle = _items[_currentIndex]._title;
         });
       },
     );

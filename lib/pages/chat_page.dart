@@ -50,7 +50,17 @@ class ChatScreenState extends State<ChatScreen> {
     _chatDocID = widget.targetUID == null ? user.uid : widget.targetUID;
 
     return Scaffold(
-      appBar: isAdmin ? AppBar(title: Text(widget.userEmail)) : null,
+      appBar: isAdmin
+          ? AppBar(
+          title: Text(widget.userEmail),
+          // make sure chat is read for the admin before he leaves
+          leading: IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context, true);
+                db.readChatThread(chatDocID: _chatDocID);
+              }))
+          : null,
       body: Column(
         children: <Widget>[
           new Flexible(
@@ -63,12 +73,10 @@ class ChatScreenState extends State<ChatScreen> {
                   .snapshots(),
               padding: new EdgeInsets.all(8.0),
               reverse: true,
-              itemBuilder: (
-                BuildContext context,
-                DocumentSnapshot snapshot,
-                Animation<double> animation,
-                int index,
-              ) {
+              itemBuilder: (BuildContext context,
+                  DocumentSnapshot snapshot,
+                  Animation<double> animation,
+                  int index,) {
                 return FadeTransition(
                     opacity: animation,
                     child: ChatMessage(
@@ -82,7 +90,9 @@ class ChatScreenState extends State<ChatScreen> {
           ), // end of Flexible
           new Divider(height: 1.0),
           new Container(
-            decoration: new BoxDecoration(color: Theme.of(context).cardColor),
+            decoration: new BoxDecoration(color: Theme
+                .of(context)
+                .cardColor),
             child: _buildTextComposer(),
           ),
         ],
@@ -114,7 +124,9 @@ class ChatScreenState extends State<ChatScreen> {
               icon: new Icon(
                 Icons.send,
               ),
-              color: Theme.of(context).accentColor,
+              color: Theme
+                  .of(context)
+                  .accentColor,
               onPressed: _isComposing
                   ? () => _handleSubmitted(_textController.text)
                   : null,
@@ -135,6 +147,9 @@ class ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage({String text}) {
     db.sendMessage(text: text, chatDocID: _chatDocID, user: user);
+    if (!isAdmin) {
+      db.updateChatThread(chatDocID: _chatDocID);
+    }
     analytics.logEvent(name: 'send_message');
   }
 }
@@ -151,82 +166,53 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new SizeTransition(
-        sizeFactor:
-            CurvedAnimation(parent: animation, curve: Curves.linearToEaseOut),
-        axisAlignment: -10.0,
-        child: document["sender"] == user.uid
-            // Own message (Right)
-            ? ListTile(
-                leading: CircleAvatar(
-                  child: Icon(
-                    isAdmin ? Icons.settings : Icons.sentiment_satisfied,
-                    color: Colors.purple,
-                  ),
-                  backgroundColor: Colors.white,
-                ),
-                title: Container(
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.purple.shade100,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(16.0),
-                        )),
-                    child: Text(document['text'])),
-                subtitle: Text(
-                  formatter.format(document['time'].toDate()),
-                  style: TextStyle(fontSize: 14.0),
-                ),
-              )
-            // Other message (Left)
-            : ListTile(
-                trailing: CircleAvatar(
-                  child: Icon(
-                    isAdmin ? Icons.sentiment_satisfied : Icons.settings,
-                  ),
-                  backgroundColor: Colors.white,
-                ),
-                title: Container(
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.orange.shade50,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(16.0),
-                        )),
-                    child: Text(document['text'])),
-                subtitle: Text(
-                  formatter.format(document['time'].toDate()),
-                  style: TextStyle(fontSize: 14.0),
-                ),
-              ));
+      sizeFactor:
+      CurvedAnimation(parent: animation, curve: Curves.linearToEaseOut),
+      axisAlignment: -10.0,
+      child: document["sender"] == user.uid
+      // Own message (Right)
+          ? ListTile(
+        leading: CircleAvatar(
+          child: Icon(
+            isAdmin ? Icons.settings : Icons.sentiment_satisfied,
+            color: Colors.green,
+          ),
+          backgroundColor: Colors.white,
+        ),
+        title: Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+                color: Colors.green.shade100,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16.0),
+                )),
+            child: Text(document['text'])),
+        subtitle: Text(
+          formatter.format(document['time'].toDate()),
+          style: TextStyle(fontSize: 14.0),
+        ),
+      )
+      // Other message (Left)
+          : ListTile(
+        trailing: CircleAvatar(
+          child: Icon(
+            isAdmin ? Icons.sentiment_satisfied : Icons.settings,
+          ),
+          backgroundColor: Colors.white,
+        ),
+        title: Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+                color: Colors.lightGreen.shade200,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16.0),
+                )),
+            child: Text(document['text'])),
+        subtitle: Text(
+          formatter.format(document['time'].toDate()),
+          style: TextStyle(fontSize: 14.0),
+        ),
+      ),
+    );
   }
 }
-
-//Container(
-//margin: const EdgeInsets.symmetric(vertical: 10.0),
-//child: new Row(
-//crossAxisAlignment: CrossAxisAlignment.start,
-//children: <Widget>[
-//// Avatar
-//new Container(
-//margin: const EdgeInsets.only(right: 16.0, left: 8.0),
-//child: new CircleAvatar(child: Icon(Icons.settings)),
-//),
-//// Message
-//Expanded(
-//child: Column(
-//crossAxisAlignment: CrossAxisAlignment.start,
-//children: <Widget>[
-//Text(
-//document["sender"],
-//style: Theme.of(context).textTheme.subtitle,
-//),
-//Container(
-//margin: const EdgeInsets.only(top: 5.0),
-//child: Text(document["text"]),
-//),
-//],
-//),
-//),
-//],
-//),
-//)

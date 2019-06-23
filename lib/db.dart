@@ -49,17 +49,34 @@ class DatabaseService {
   Future<void> createChat(userUID, userEmail) {
     return _db.collection('chats').document(userUID).setData({
       'email': '$userEmail',
+      'read': true,
+      'last_message': DateTime.now()
     });
   }
 
   /// Messages
   void sendMessage({String text, String chatDocID, FirebaseUser user}) {
     _db.collection('chats').document(chatDocID)
-      ..collection('messages').add({
+      .collection('messages').add({
         'text': text,
         'sender': '${user.uid}',
         'time': DateTime.now() //FieldValue.serverTimestamp(),
       });
+  }
+
+  void updateChatThread({String chatDocID}) {
+    _db.collection('chats').document(chatDocID)
+      .updateData({
+        'read': false,
+        'last_message': DateTime.now()
+      });
+  }
+
+  void readChatThread({String chatDocID}) {
+    _db.collection('chats').document(chatDocID)
+        .updateData({
+      'read': true,
+    });
   }
 
   /// Lessons
