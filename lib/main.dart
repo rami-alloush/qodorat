@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          const FallbackCupertinoLocalisationsDelegate(),
         ],
         supportedLocales: [const Locale("ar")],
         navigatorObservers: [
@@ -43,7 +45,9 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.white,
             primaryColor: Colors.lightGreen,
             primarySwatch: Colors.green,
-            buttonTheme: ButtonThemeData(buttonColor: Colors.green,)),
+            buttonTheme: ButtonThemeData(
+              buttonColor: Colors.green,
+            )),
         home: CheckLogin(),
       ),
     );
@@ -60,22 +64,22 @@ class CheckLogin extends StatelessWidget {
 
     final _loadingScaffold = Scaffold(
         body: Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.white, Colors.grey],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.white, Colors.grey],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight),
+      ),
+      child: Center(
+        child: new Text(
+          'جاري التحميل ...',
+          style: TextStyle(
+            color: Colors.white,
           ),
-          child: Center(
-            child: new Text(
-              'جاري التحميل ...',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ));
+        ),
+      ),
+    ));
 
     // Test Page
 //    return ChatScreen();
@@ -103,22 +107,22 @@ class CheckLogin extends StatelessWidget {
                   if (snapshot.hasError)
                     return Scaffold(
                         body: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.deepOrange, Colors.orange[600]],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Colors.deepOrange, Colors.orange[600]],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight),
+                      ),
+                      child: Center(
+                        child: new Text(
+                          'Error: ${snapshot.error}',
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
-                          child: Center(
-                            child: new Text(
-                              'Error: ${snapshot.error}',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ));
+                        ),
+                      ),
+                    ));
                   print('isPaid? ${snapshot.data}');
                   if (snapshot.data) {
                     // Paid user
@@ -151,4 +155,19 @@ getUserType(FirebaseUser user) {
   analytics.logLogin();
   print("UserType: " + '$userType' + ' ' + '${user.uid}');
   return userType;
+}
+
+class FallbackCupertinoLocalisationsDelegate
+    extends LocalizationsDelegate<CupertinoLocalizations> {
+  const FallbackCupertinoLocalisationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => true;
+
+  @override
+  Future<CupertinoLocalizations> load(Locale locale) =>
+      DefaultCupertinoLocalizations.load(locale);
+
+  @override
+  bool shouldReload(FallbackCupertinoLocalisationsDelegate old) => false;
 }
