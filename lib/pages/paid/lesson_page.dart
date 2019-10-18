@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:qodorat/models.dart';
+import 'package:qodorattest/models.dart';
 
 class LessonPage extends StatefulWidget {
   LessonPage(this.lesson);

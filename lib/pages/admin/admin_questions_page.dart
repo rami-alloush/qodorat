@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qodorat/db.dart';
+import 'package:qodorattest/db.dart';
 import 'admin_add_question_page.dart';
 
 // Pages for Question display and add btn

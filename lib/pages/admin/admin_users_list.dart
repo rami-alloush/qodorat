@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_ui/firestore_ui.dart';
-import 'package:qodorat/pages/admin/admin_user_details_page.dart';
-import 'package:qodorat/models.dart';
+import 'package:qodorattest/pages/admin/admin_user_details_page.dart';
+import 'package:qodorattest/models.dart';
 
 class UsersListPage extends StatelessWidget {
   @override

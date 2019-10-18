@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/db.dart';
-import 'package:qodorat/models.dart';
-import 'package:qodorat/pages/paid/lesson_page.dart';
-import 'package:qodorat/pages/paid/exam_page.dart';
+import 'package:qodorattest/db.dart';
+import 'package:qodorattest/models.dart';
+import 'package:qodorattest/pages/paid/lesson_page.dart';
+import 'package:qodorattest/pages/paid/exam_page.dart';
 
 class SectionPage extends StatefulWidget {
   SectionPage({

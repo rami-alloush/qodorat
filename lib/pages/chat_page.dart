@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:qodorat/db.dart';
+import 'package:qodorattest/db.dart';
 
 final db = DatabaseService();
 final analytics = new FirebaseAnalytics();

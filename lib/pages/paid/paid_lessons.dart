@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qodorat/pages/paid/backdrop.dart';
-import 'package:qodorat/bloc/scroll_bloc.dart';
-import 'package:qodorat/pages/paid/section_page.dart';
+import 'package:qodorattest/pages/paid/backdrop.dart';
+import 'package:qodorattest/bloc/scroll_bloc.dart';
+import 'package:qodorattest/pages/paid/section_page.dart';
 
 class PaidLessonsPage extends StatefulWidget {
   @override
@@ -104,10 +104,10 @@ class MyBackLayerState extends State<MyBackLayer>
     const List _Cat1Sections = ["الحساب", "الجبر", "تحليل البيانات", "الهندسة"];
     const List _Cat2Sections = [
       "التناظر اللفظي",
-      "اكمال الجمل",
       "المفردة الشاذة",
-      "استيعاب المقروء",
+      "اكمال الجمل",
       "الخطأ السياقي"
+      "استيعاب المقروء",
     ];
 
     return Column(

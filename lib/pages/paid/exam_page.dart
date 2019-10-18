@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/db.dart';
+import 'package:qodorattest/db.dart';
 
 var questionNumber = 0;
 var finalScore = 0;

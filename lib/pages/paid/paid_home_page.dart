@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/paid/paid_lessons.dart';
-import 'package:qodorat/pages/chat_start_page.dart';
+import 'package:qodorattest/pages/paid/paid_lessons.dart';
+import 'package:qodorattest/pages/chat_start_page.dart';
 
 class PaidHomePage extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
-import 'package:qodorat/pages/admin/admin_section_page.dart';
+import 'package:qodorattest/pages/admin/admin_section_page.dart';
 import 'admin_questions_page.dart';
 
 /// Main admin content page that displays
@@ -66,10 +66,10 @@ class _ManageContentState extends State<ManageContent> {
       _mySectionsCard(1, ["الحساب", "الجبر", "تحليل البيانات", "الهندسة"]),
       _mySectionsCard(2, [
         "التناظر اللفظي",
-        "اكمال الجمل",
         "المفردة الشاذة",
-        "استيعاب المقروء",
+        "اكمال الجمل",
         "الخطأ السياقي"
+        "استيعاب المقروء",
       ]), 
       _mySectionsCard(3, [
         "تدريب 1",

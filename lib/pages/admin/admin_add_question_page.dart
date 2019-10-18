@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qodorat/db.dart';
-import 'package:qodorat/models.dart';
+import 'package:qodorattest/db.dart';
+import 'package:qodorattest/models.dart';
 
 class AddQuestion extends StatefulWidget {
   AddQuestion({@required this.examID});

@@ -1,4 +1,4 @@
-name: qodorat
+name: qodorattest
 description: A new Flutter application.
 
 # The following defines the version and build number for your application.
@@ -58,8 +58,8 @@ dev_dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: "assets/launcher/icon.png"
-  image_path_android: "assets/launcher/icon.png"
+  image_path_ios: "assets/launcher/icon.jpg" #must be JPG
+  image_path_android: "assets/launcher/icon."
   adaptive_icon_background: "assets/launcher/background.png"
   adaptive_icon_foreground: "assets/launcher/foreground.png"
 

@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'package:qodorat/pages/intro_page.dart';
-import 'package:qodorat/db.dart';
+import 'package:qodorattest/pages/intro_page.dart';
+import 'package:qodorattest/db.dart';
 
 final analytics = FirebaseAnalytics();
 enum FormMode { LOGIN, SIGNUP }

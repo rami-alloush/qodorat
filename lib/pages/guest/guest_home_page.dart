@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/guest/upgrade_benefits.dart';
-import 'package:qodorat/pages/chat_start_page.dart';
-import 'package:qodorat/pages/guest/terms_and_conditions_page.dart';
+import 'package:qodorattest/pages/guest/upgrade_benefits.dart';
+import 'package:qodorattest/pages/chat_start_page.dart';
+import 'package:qodorattest/pages/guest/terms_and_conditions_page.dart';
 
 class GuestHomePage extends StatefulWidget {
   @override

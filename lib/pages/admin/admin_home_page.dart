@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:qodorat/pages/admin/admin_chat_list.dart';
-import 'package:qodorat/pages/admin/admin_users_list.dart';
-import 'package:qodorat/pages/admin/admin_manage_content.dart';
+import 'package:qodorattest/pages/admin/admin_chat_list.dart';
+import 'package:qodorattest/pages/admin/admin_users_list.dart';
+import 'package:qodorattest/pages/admin/admin_manage_content.dart';
 
 class AdminHomePage extends StatefulWidget {
   @override

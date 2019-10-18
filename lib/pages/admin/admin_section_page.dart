@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qodorat/db.dart';
-import 'package:qodorat/pages/paid/lesson_page.dart';
-import 'package:qodorat/pages/admin/admin_add_lesson_page.dart';
+import 'package:qodorattest/db.dart';
+import 'package:qodorattest/pages/paid/lesson_page.dart';
+import 'package:qodorattest/pages/admin/admin_add_lesson_page.dart';
 import 'admin_questions_page.dart';
 
 // Displays the main section page with 3 PageViews

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qodorat/pages/chat_page.dart';
+import 'package:qodorattest/pages/chat_page.dart';
 
 class UserDetails extends StatelessWidget {
   UserDetails({@required this.user});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_ui/firestore_ui.dart';
-import 'package:qodorat/pages/chat_page.dart';
+import 'package:qodorattest/pages/chat_page.dart';
 
 class ChatListPage extends StatelessWidget {
   final chatsStream = Firestore.instance
